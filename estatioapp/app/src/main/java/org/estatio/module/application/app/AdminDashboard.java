@@ -58,12 +58,15 @@ import org.incode.module.country.dom.impl.Country;
 import org.incode.module.slack.impl.SlackService;
 
 import org.estatio.module.application.contributions.Organisation_syncToCoda;
+import org.estatio.module.asset.dom.PropertyRepository;
 import org.estatio.module.capex.app.taskreminder.TaskReminderService;
 import org.estatio.module.capex.dom.invoice.IncomingInvoice;
 import org.estatio.module.capex.dom.invoice.IncomingInvoiceRepository;
 import org.estatio.module.capex.dom.invoice.IncomingInvoiceRoleTypeEnum;
 import org.estatio.module.capex.dom.invoice.approval.IncomingInvoiceApprovalState;
 import org.estatio.module.capex.dom.invoice.approval.IncomingInvoiceApprovalStateTransition;
+import org.estatio.module.charge.dom.Charge;
+import org.estatio.module.charge.dom.ChargeRepository;
 import org.estatio.module.coda.EstatioCodaModule;
 import org.estatio.module.coda.app.CodaCmpCodeService;
 import org.estatio.module.coda.app.CodaDocCodeService;
@@ -75,8 +78,10 @@ import org.estatio.module.countryapptenancy.dom.EstatioApplicationTenancyReposit
 import org.estatio.module.lease.dom.InvoicingFrequency;
 import org.estatio.module.lease.dom.Lease;
 import org.estatio.module.lease.dom.LeaseAgreementRoleTypeEnum;
+import org.estatio.module.lease.dom.LeaseItem;
 import org.estatio.module.lease.dom.LeaseItemType;
 import org.estatio.module.lease.dom.LeaseRepository;
+import org.estatio.module.lease.dom.LeaseTermForServiceCharge;
 import org.estatio.module.lease.dom.amendments.Lease_closeOldAndOpenNewLeaseItem;
 import org.estatio.module.lease.dom.settings.LeaseInvoicingSettingsService;
 import org.estatio.module.party.dom.Organisation;
@@ -655,6 +660,49 @@ public class AdminDashboard implements ViewModel {
                             removeinvoicesOldItem);
         });
     }
+
+    @Action(semantics = SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE, restrictTo = RestrictTo.PROTOTYPING)
+    public void closePropertyTaxItemsInvoicedByManagerAndOpenItemsInvoicedByLandlord(final Params params){
+        final LocalDate start2020 = new LocalDate(2020, 1, 1);
+        final org.estatio.module.asset.dom.Property property = propertyRepository
+                .findPropertyByReference(params.getPropertyReference());
+        final Charge charge = chargeRepository.findByReference(params.getChargeReference());
+        final List<Lease> leasesByProperty = leaseRepository.findLeasesByProperty(property);
+        for (Lease lease : leasesByProperty){
+            for (LeaseItem leaseItem : lease.findItemsOfType(LeaseItemType.PROPERTY_TAX)){
+                if (leaseItem.getInvoicedBy()==LeaseAgreementRoleTypeEnum.MANAGER && (leaseItem.getEndDate()==null || !leaseItem.getEndDate().isBefore(start2020))){
+                    lease.verifyUntil(start2020.plusDays(1));
+                    LeaseItem newItem = lease.newItem(leaseItem.getType(), LeaseAgreementRoleTypeEnum.LANDLORD, charge, params.getInvoicingFrequency(), leaseItem.getPaymentMethod(), start2020);
+                    LOG.info(String.format("New property tax item invoiced by Landlord created starting %s for lease %s ", newItem.getStartDate(), lease.getReference()));
+                    final LeaseTermForServiceCharge leaseTerm = (LeaseTermForServiceCharge) newItem.newTerm(start2020, null);
+                    leaseTerm.setBudgetedValue(leaseItem.valueForDate(start2020));
+                    leaseItem.setEndDate(start2020.minusDays(1));
+                    LOG.info(String.format("Old property tax item invoiced by Manager closed at %s for lease %s ", leaseItem.getEndDate(), lease.getReference()));
+                }
+            }
+        }
+    }
+
+    public enum Params {
+        AM("AM", InvoicingFrequency.YEARLY_IN_ADVANCE_PLUS9M, "FR4060"),
+        DEMO_OXF("OXF", InvoicingFrequency.YEARLY_IN_ADVANCE_PLUS9M, "GBR_TAX");
+
+        @Getter
+        private String propertyReference;
+
+        @Getter
+        private InvoicingFrequency invoicingFrequency;
+
+        @Getter
+        private String chargeReference;
+
+        Params(final String propertyReference, final InvoicingFrequency invoicingFrequency, final String chargeReference){
+            this.propertyReference = propertyReference;
+            this.invoicingFrequency = invoicingFrequency;
+            this.chargeReference = chargeReference;
+        }
+
+    }
     
     @Inject
     CodaCmpCodeService codaCmpCodeService;
@@ -741,5 +789,10 @@ public class AdminDashboard implements ViewModel {
 
     @Inject
     StateTransitionService stateTransitionService;
+
+    @Inject
+    PropertyRepository propertyRepository;
+
+    @Inject ChargeRepository chargeRepository;
 
 }
