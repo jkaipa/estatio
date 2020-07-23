@@ -298,10 +298,10 @@ public class TurnoverAggregationService {
         });
         if (toCY.isEmpty()){
             turnoverAggregateForPeriod.setTurnoverCount(null);
-            turnoverAggregateForPeriod.setNonComparableThisYear(null);
+            turnoverAggregateForPeriod.setNonComparableThisYear(true);
         } else {
             if (turnoverAggregateForPeriod.getTurnoverCount()==null) turnoverAggregateForPeriod.setTurnoverCount(0);
-            turnoverAggregateForPeriod.setNonComparableThisYear(containsNonComparableTurnover(toCY));
+            turnoverAggregateForPeriod.setNonComparableThisYear(containsNonComparableTurnoverOrMissingTurnovers(toCY, turnoverAggregateForPeriod.getAggregationPeriod(), turnoverAggregateForPeriod.getTurnoverCount()));
         }
 
         toPY.forEach(t->{
@@ -311,19 +311,13 @@ public class TurnoverAggregationService {
         });
         if (toPY.isEmpty()){
             turnoverAggregateForPeriod.setTurnoverCountPreviousYear(null);
-            turnoverAggregateForPeriod.setNonComparablePreviousYear(null);
+            turnoverAggregateForPeriod.setNonComparablePreviousYear(true);
         } else {
             if (turnoverAggregateForPeriod.getTurnoverCountPreviousYear()==null) turnoverAggregateForPeriod.setTurnoverCountPreviousYear(0);
-            turnoverAggregateForPeriod.setNonComparablePreviousYear(containsNonComparableTurnover(toPY));
+            turnoverAggregateForPeriod.setNonComparablePreviousYear(containsNonComparableTurnoverOrMissingTurnovers(toPY, turnoverAggregateForPeriod.getAggregationPeriod(), turnoverAggregateForPeriod.getTurnoverCountPreviousYear()));
         }
 
-        turnoverAggregateForPeriod.setComparable(isComparableForPeriod(
-                turnoverAggregateForPeriod.getAggregationPeriod(),
-                turnoverAggregateForPeriod.getTurnoverCount(),
-                turnoverAggregateForPeriod.getTurnoverCountPreviousYear(),
-                turnoverAggregateForPeriod.getNonComparableThisYear(),
-                turnoverAggregateForPeriod.getNonComparablePreviousYear()
-                ));
+        turnoverAggregateForPeriod.setComparable(!turnoverAggregateForPeriod.getNonComparableThisYear() && !turnoverAggregateForPeriod.getNonComparablePreviousYear());
 
     }
 
@@ -535,6 +529,12 @@ public class TurnoverAggregationService {
     Boolean isComparableToDate(final LocalDate aggregationDate, final Integer numberOfTurnoversThisYear, final Integer numberOfTurnoversPreviousYear, final Boolean nonComparableThisYear, final Boolean nonComparablePreviousYear ){
          if (numberOfTurnoversThisYear==null || numberOfTurnoversPreviousYear == null) return false;
          return !nonComparableThisYear && !nonComparablePreviousYear && numberOfTurnoversThisYear >= getMinNumberOfTurnoversToDate(aggregationDate) && numberOfTurnoversPreviousYear >= getMinNumberOfTurnoversToDate(aggregationDate);
+    }
+
+    Boolean containsNonComparableTurnoverOrMissingTurnovers(final List<Turnover> turnoverList, final AggregationPeriod aggregationPeriod, final Integer numberOfValidTurnovers){
+        if (turnoverList.isEmpty()) return null;
+        if (aggregationPeriod.getMinNumberOfTurnovers()>numberOfValidTurnovers) return true;
+        return turnoverList.stream().anyMatch(t->t.isNonComparable());
     }
 
     Boolean containsNonComparableTurnover(final List<Turnover> turnoverList){

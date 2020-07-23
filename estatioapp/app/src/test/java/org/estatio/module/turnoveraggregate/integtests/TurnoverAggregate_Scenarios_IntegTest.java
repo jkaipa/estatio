@@ -161,13 +161,13 @@ public class TurnoverAggregate_Scenarios_IntegTest extends TurnoverAggregateModu
         assertThat(agg20200101.getAggregate1Month().getTurnoverCountPreviousYear()).isEqualTo(1);
         assertThat(agg20200101.getAggregate1Month().getNetAmountPreviousYear()).isEqualTo(new BigDecimal("0.00"));
         assertThat(agg20200101.getAggregate1Month().getTurnoverCount()).isNull();
-        assertThat(agg20200101.getAggregate1Month().getNonComparableThisYear()).isNull();
+        assertThat(agg20200101.getAggregate1Month().getNonComparableThisYear()).isTrue();
         assertThat(agg20200101.getAggregate1Month().getNonComparablePreviousYear()).isEqualTo(false);
         assertThat(agg20200101.getAggregate2Month().getGrossAmount()).isNull();
-        assertThat(agg20200101.getAggregate2Month().getNonComparableThisYear()).isNull();
+        assertThat(agg20200101.getAggregate2Month().getNonComparableThisYear()).isTrue();
         assertThat(agg20200101.getAggregate2Month().getGrossAmountPreviousYear()).isEqualTo(new BigDecimal("176524.00"));
         assertThat(agg20200101.getAggregate2Month().getTurnoverCountPreviousYear()).isEqualTo(2);
-        assertThat(agg20200101.getAggregate3Month().getNonComparableThisYear()).isFalse();
+        assertThat(agg20200101.getAggregate3Month().getNonComparableThisYear()).isTrue();
         assertThat(agg20200101.getAggregate3Month().getGrossAmountPreviousYear()).isEqualTo(new BigDecimal("276566.00"));
         assertThat(agg20200101.getAggregate3Month().getTurnoverCountPreviousYear()).isEqualTo(3);
         assertThat(agg20200101.getAggregate12Month().getGrossAmountPreviousYear()).isEqualTo(new BigDecimal("900140.00"));
@@ -312,7 +312,7 @@ public class TurnoverAggregate_Scenarios_IntegTest extends TurnoverAggregateModu
 
         assertThat(agg20200101.getAggregate12Month().getTurnoverCountPreviousYear()).isEqualTo(12);
         assertThat(agg20200101.getAggregate12Month().getGrossAmountPreviousYear()).isEqualTo(new BigDecimal("410000.00"));
-        assertThat(agg20200101.getAggregate1Month().getNonComparableThisYear()).isEqualTo(null);
+        assertThat(agg20200101.getAggregate1Month().getNonComparableThisYear()).isEqualTo(true);
 
         final TurnoverAggregation agg20190401Min = turnoverAggregationRepository.findUnique(
                 occ1Cfg_min2, new LocalDate(2019,4,1));
