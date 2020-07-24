@@ -531,8 +531,8 @@ public class TurnoverAggregationService {
          return !nonComparableThisYear && !nonComparablePreviousYear && numberOfTurnoversThisYear >= getMinNumberOfTurnoversToDate(aggregationDate) && numberOfTurnoversPreviousYear >= getMinNumberOfTurnoversToDate(aggregationDate);
     }
 
-    Boolean containsNonComparableTurnoverOrMissingTurnovers(final List<Turnover> turnoverList, final AggregationPeriod aggregationPeriod, final Integer numberOfValidTurnovers){
-        if (turnoverList.isEmpty()) return null;
+    boolean containsNonComparableTurnoverOrMissingTurnovers(final List<Turnover> turnoverList, final AggregationPeriod aggregationPeriod, final Integer numberOfValidTurnovers){
+        if (turnoverList.isEmpty()) return true;
         if (aggregationPeriod.getMinNumberOfTurnovers()>numberOfValidTurnovers) return true;
         return turnoverList.stream().anyMatch(t->t.isNonComparable());
     }
