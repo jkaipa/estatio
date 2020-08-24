@@ -146,6 +146,30 @@ public enum LeaseAmendmentType {
             new LocalDate(2020,4,1), // because of _PLUSM1 / _PLUSM2 calcs
             new LocalDate(2020,12,31),
             false),
+    COVID_ITA_TEMP(
+            new LocalDate(2020,7,1),
+            new BigDecimal("0.00"),
+            Arrays.asList(
+                    LeaseItemType.RENT
+            ),
+            new LocalDate(2020,7,1),
+            new LocalDate(2020,8,31),
+            Arrays.asList(
+                    new Tuple<>("6001", "6014"),
+                    new Tuple<>("6002", "6015"),
+                    new Tuple<>("6031", "6014"), // current discount charge on any discount item
+                    new Tuple<>("6032", "6015"), // current discount charge on any discount item
+                    new Tuple<>(null, "6015") // TODO: check DEFAULT with users?
+            ),
+            new LocalDate(2020,7,1),
+            null,
+            null,
+            null,
+            null,
+            "-ATMP",
+            new LocalDate(2020,4,1), // because of _PLUSM1 / _PLUSM2 calcs
+            new LocalDate(2020,12,31),
+            false),
     COVID_ITA_FREQ_CHANGE_ONLY(
             new LocalDate(2020,7,1),
             null,

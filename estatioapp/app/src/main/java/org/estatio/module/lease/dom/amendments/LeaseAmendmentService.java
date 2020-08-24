@@ -62,6 +62,7 @@ public class LeaseAmendmentService {
                 LeaseAmendmentType.COVID_FRA_100_PERC,
                 LeaseAmendmentType.COVID_ITA_100_PERC_1M,
                 LeaseAmendmentType.COVID_ITA_100_PERC_2M,
+                LeaseAmendmentType.COVID_ITA_TEMP,
                 LeaseAmendmentType.COVID_ITA_FREQ_CHANGE_ONLY,
                 LeaseAmendmentType.DEMO_TYPE,
                 LeaseAmendmentType.DEMO_TYPE2).
