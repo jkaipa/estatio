@@ -13,19 +13,18 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.jdo.annotations.Column;
-import javax.jdo.annotations.DatastoreIdentity;
-import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Discriminator;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Index;
 import javax.jdo.annotations.Indices;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Queries;
 import javax.jdo.annotations.Query;
 import javax.jdo.annotations.Unique;
-import javax.jdo.annotations.Version;
-import javax.jdo.annotations.VersionStrategy;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.google.common.base.Strings;
@@ -71,8 +70,6 @@ import org.estatio.module.capex.dom.invoice.approval.triggers.IncomingInvoice_re
 import org.estatio.module.capex.dom.order.Order;
 import org.estatio.module.capex.dom.orderinvoice.OrderItemInvoiceItemLinkRepository;
 import org.estatio.module.capex.dom.project.Project;
-import org.estatio.module.task.dom.state.StateTransitionService;
-import org.estatio.module.task.dom.task.Task;
 import org.estatio.module.charge.dom.Charge;
 import org.estatio.module.coda.dom.doc.appsettings.ApplicationSettingKey;
 import org.estatio.module.financial.dom.BankAccount;
@@ -84,6 +81,8 @@ import org.estatio.module.party.dom.role.PartyRoleType;
 import org.estatio.module.party.dom.role.PartyRoleTypeRepository;
 import org.estatio.module.settings.dom.ApplicationSetting;
 import org.estatio.module.settings.dom.ApplicationSettingsServiceRW;
+import org.estatio.module.task.dom.state.StateTransitionService;
+import org.estatio.module.task.dom.task.Task;
 
 import lombok.Data;
 import lombok.Getter;
@@ -91,17 +90,11 @@ import lombok.Setter;
 import lombok.val;
 
 @PersistenceCapable(
-        // TODO: REVIEW: EST-1862: an alternative design would be to use the cmpCode/docCode/docNum as the unique (application) key.
         identityType = IdentityType.DATASTORE,
-        schema = "dbo",
-        table = "CodaDocHead"
+        schema = "dbo"
 )
-@DatastoreIdentity(
-        strategy = IdGeneratorStrategy.IDENTITY,
-        column = "id")
-@Version(
-        strategy = VersionStrategy.VERSION_NUMBER,
-        column = "version")
+@Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
+@Discriminator("org.estatio.module.coda.dom.doc.CodaDocHead")
 @Queries({
         @Query(
                 name = "findByCmpCodeAndDocCodeAndDocNum", language = "JDOQL",
@@ -192,7 +185,7 @@ import lombok.val;
         bookmarking = BookmarkPolicy.AS_ROOT
 )
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
-public class CodaDocHead implements Comparable<CodaDocHead>, HasAtPath {
+public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaDocHead>, HasAtPath {
 
     static final CodaPeriodParser parser = new CodaPeriodParser();
 
@@ -211,8 +204,7 @@ public class CodaDocHead implements Comparable<CodaDocHead>, HasAtPath {
             final String sha256,
             final String statPay) {
 
-        this.cmpCode = cmpCode;
-        this.docCode = docCode;
+        super(cmpCode, docCode);
         this.docNum = docNum;
         this.codaTimeStamp = codaTimeStamp;
         this.inputDate = inputDate;
@@ -254,16 +246,6 @@ public class CodaDocHead implements Comparable<CodaDocHead>, HasAtPath {
     public String title() {
         return String.format("%s | %s | %s", getCmpCode(), getDocCode(), getDocNum());
     }
-
-    @Column(allowsNull = "false", length = 12)
-    @Property()
-    @Getter @Setter
-    private String cmpCode;
-
-    @Column(allowsNull = "false", length = 12)
-    @Property()
-    @Getter @Setter
-    private String docCode;
 
     @Column(allowsNull = "false", length = 12)
     @Property()
@@ -1149,12 +1131,12 @@ public class CodaDocHead implements Comparable<CodaDocHead>, HasAtPath {
 
     @Programmatic
     public Comparison compareWith(final CodaDocHead other) {
-        if (other == null) {
-            return Comparison.noOther();
-        }
-        if (isSameAs(other)) {
-            return Comparison.same();
-        }
+            if (other == null) {
+                return Comparison.noOther();
+            }
+            if (isSameAs(other)) {
+                return Comparison.same();
+            }
         CodaDocLine summaryLine = summaryDocLine(LineCache.DEFAULT);
         CodaDocLine otherSummaryLine = other.summaryDocLine(LineCache.DEFAULT);
         if (summaryLine != null && otherSummaryLine == null) {
