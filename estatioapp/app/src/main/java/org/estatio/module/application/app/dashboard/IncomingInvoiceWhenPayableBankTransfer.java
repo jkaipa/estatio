@@ -16,7 +16,7 @@ import org.apache.isis.applib.annotation.Where;
 
 import org.estatio.module.asset.dom.Property;
 import org.estatio.module.capex.dom.invoice.IncomingInvoice;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.party.dom.Party;
 
 import lombok.Getter;
@@ -37,14 +37,14 @@ import static org.apache.isis.applib.annotation.Projecting.PROJECTED;
 @NoArgsConstructor
 public class IncomingInvoiceWhenPayableBankTransfer {
 
-    public IncomingInvoiceWhenPayableBankTransfer(final CodaDocHead codaDocHead) {
-        this(codaDocHead.getIncomingInvoice(), codaDocHead);
+    public IncomingInvoiceWhenPayableBankTransfer(final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta) {
+        this(codaDocHeadIncInvoiceIta.getIncomingInvoice(), codaDocHeadIncInvoiceIta);
     }
 
-    public IncomingInvoiceWhenPayableBankTransfer(final IncomingInvoice incomingInvoice, final CodaDocHead codaDocHead) {
-        this.codaDocHead = codaDocHead;
+    public IncomingInvoiceWhenPayableBankTransfer(final IncomingInvoice incomingInvoice, final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta) {
+        this.codaDocHeadIncInvoiceIta = codaDocHeadIncInvoiceIta;
         this.incomingInvoice = incomingInvoice;
-        this.userStatus = codaDocHead.getUserStatus();
+        this.userStatus = codaDocHeadIncInvoiceIta.getUserStatus();
     }
 
     @org.apache.isis.applib.annotation.Property(projecting = PROJECTED)
@@ -91,6 +91,6 @@ public class IncomingInvoiceWhenPayableBankTransfer {
     private Character userStatus;
 
     @Getter @Setter @Nullable
-    private CodaDocHead codaDocHead;
+    private CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta;
 
 }

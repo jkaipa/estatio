@@ -19,7 +19,7 @@ import org.incode.module.document.dom.impl.types.DocumentType;
 import org.incode.module.document.dom.impl.types.DocumentTypeRepository;
 
 import org.estatio.module.capex.dom.documents.IncomingDocumentRepository;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.coda.dom.doc.CodaDocLine;
 import org.estatio.module.coda.dom.doc.CodaDocLineRepository;
 import org.estatio.module.docflow.dom.DocFlowZip;
@@ -62,18 +62,18 @@ public class AttachDocumentToIncomingInvoiceSubscriber extends AbstractSubscribe
         }
     }
 
-    private List<CodaDocHead> kickCodaDocHeadsAndUpdatePaperclips(
+    private List<CodaDocHeadIncInvoiceIta> kickCodaDocHeadsAndUpdatePaperclips(
             final Document document, final String userRef1) {
         final DocumentType docType = DocumentTypeData.INCOMING_INVOICE.findUsing(documentTypeRepository);
 
-        final List<CodaDocHead> updated = Lists.newArrayList();
+        final List<CodaDocHeadIncInvoiceIta> updated = Lists.newArrayList();
         codaDocLineRepository.findByUserRef1(userRef1)
                 .stream()
                 .map(CodaDocLine::getDocHead)
                 .distinct()
-                .peek(CodaDocHead::kick) // if was invalid but is now valid, then kick in order to create invoice etc.
+                .peek(CodaDocHeadIncInvoiceIta::kick) // if was invalid but is now valid, then kick in order to create invoice etc.
                 .peek(updated::add)      // keep track of fact that this was updated.
-                .map(CodaDocHead::getIncomingInvoice)
+                .map(CodaDocHeadIncInvoiceIta::getIncomingInvoice)
                 .filter(Objects::nonNull)
                 .forEach(invoice -> {
                     paperclipRepository.attach(document, null, invoice);

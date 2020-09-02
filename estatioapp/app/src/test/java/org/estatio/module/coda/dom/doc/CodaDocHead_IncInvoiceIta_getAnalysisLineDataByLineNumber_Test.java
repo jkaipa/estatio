@@ -14,9 +14,9 @@ import org.estatio.module.charge.dom.Charge;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
+public class CodaDocHead_IncInvoiceIta_getAnalysisLineDataByLineNumber_Test {
 
-    CodaDocHead codaDocHead;
+    CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta;
     boolean codaDocHeadLegacyState;
 
     CodaDocLine codaDocLine;
@@ -30,15 +30,15 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
 
     @Before
     public void setUp() throws Exception {
-        codaDocHead = new CodaDocHead() {
+        codaDocHeadIncInvoiceIta = new CodaDocHeadIncInvoiceIta() {
             @Override boolean isLegacyAnalysisLineWithNullDocValue() {
                 return codaDocHeadLegacyState;
             }
         };
-        codaDocHead.setCmpCode("IT01");
-        codaDocHead.setDocCode("FR-GEN");
-        codaDocHead.setDocNum("12345");
-        codaDocHead.setLines(Sets.newTreeSet());
+        codaDocHeadIncInvoiceIta.setCmpCode("IT01");
+        codaDocHeadIncInvoiceIta.setDocCode("FR-GEN");
+        codaDocHeadIncInvoiceIta.setDocNum("12345");
+        codaDocHeadIncInvoiceIta.setLines(Sets.newTreeSet());
 
         codaDocLine = new CodaDocLine();
 
@@ -60,7 +60,7 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
 
         // when
         final Map<Integer, LineData> map =
-                codaDocHead.getAnalysisLineDataByLineNumber();
+                codaDocHeadIncInvoiceIta.getAnalysisLineDataByLineNumber();
 
         // then
         assertThat(map).isEmpty();
@@ -72,7 +72,7 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
         // given
         codaDocHeadLegacyState = false;
         final CodaDocLine codaDocLine = new CodaDocLine();
-        codaDocLine.setDocHead(codaDocHead);
+        codaDocLine.setDocHead(codaDocHeadIncInvoiceIta);
         codaDocLine.setLineNum(2);
         codaDocLine.setLineType(LineType.ANALYSIS);
 
@@ -80,12 +80,12 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
         codaDocLine.setExtRefWorkTypeCharge(charge);
         codaDocLine.setExtRefProject(project);
 
-        codaDocHead.getLines().add(codaDocLine);
+        codaDocHeadIncInvoiceIta.getLines().add(codaDocLine);
 
 
         // when
         final Map<Integer, LineData> map =
-                codaDocHead.getAnalysisLineDataByLineNumber();
+                codaDocHeadIncInvoiceIta.getAnalysisLineDataByLineNumber();
 
         // then
         assertThat(map).hasSize(1);
@@ -104,7 +104,7 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
         // given
         codaDocHeadLegacyState = false;
         final CodaDocLine codaDocLine = new CodaDocLine();
-        codaDocLine.setDocHead(codaDocHead);
+        codaDocLine.setDocHead(codaDocHeadIncInvoiceIta);
         codaDocLine.setLineNum(2);
         codaDocLine.setLineType(LineType.ANALYSIS);
 
@@ -112,12 +112,12 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
         codaDocLine.setExtRefWorkTypeCharge(null);
         codaDocLine.setExtRefProject(null);
 
-        codaDocHead.getLines().add(codaDocLine);
+        codaDocHeadIncInvoiceIta.getLines().add(codaDocLine);
 
 
         // when
         final Map<Integer, LineData> map =
-                codaDocHead.getAnalysisLineDataByLineNumber();
+                codaDocHeadIncInvoiceIta.getAnalysisLineDataByLineNumber();
 
         // then
         assertThat(map).hasSize(1);
@@ -135,7 +135,7 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
 
         // when
         final Map<Integer, LineData> map =
-                codaDocHead.getAnalysisLineDataByLineNumber();
+                codaDocHeadIncInvoiceIta.getAnalysisLineDataByLineNumber();
 
         // then
         assertThat(map).isEmpty();
@@ -147,22 +147,22 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
         // given
         codaDocHeadLegacyState = true;
         final CodaDocLine codaDocLine = new CodaDocLine();
-        codaDocLine.setDocHead(codaDocHead);
+        codaDocLine.setDocHead(codaDocHeadIncInvoiceIta);
         codaDocLine.setLineNum(1);
         codaDocLine.setLineType(LineType.SUMMARY);
 
-        codaDocHead.setIncomingInvoice(invoice);
+        codaDocHeadIncInvoiceIta.setIncomingInvoice(invoice);
 
         codaDocLine.setIncomingInvoiceItem(null); // will infer item from the parent incoming invoice
         codaDocLine.setExtRefWorkTypeCharge(charge);
         codaDocLine.setExtRefProject(project);
 
-        codaDocHead.getLines().add(codaDocLine);
+        codaDocHeadIncInvoiceIta.getLines().add(codaDocLine);
 
 
         // when
         final Map<Integer, LineData> map =
-                codaDocHead.getAnalysisLineDataByLineNumber();
+                codaDocHeadIncInvoiceIta.getAnalysisLineDataByLineNumber();
 
         // then
         assertThat(map).hasSize(1);
@@ -181,7 +181,7 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
         // given
         codaDocHeadLegacyState = true;
 
-        codaDocLine.setDocHead(codaDocHead);
+        codaDocLine.setDocHead(codaDocHeadIncInvoiceIta);
         codaDocLine.setLineNum(1);
         codaDocLine.setLineType(LineType.SUMMARY);
 
@@ -189,12 +189,12 @@ public class CodaDocHead_getAnalysisLineDataByLineNumber_Test {
         codaDocLine.setExtRefWorkTypeCharge(null);
         codaDocLine.setExtRefProject(null);
 
-        codaDocHead.getLines().add(codaDocLine);
+        codaDocHeadIncInvoiceIta.getLines().add(codaDocLine);
 
 
         // when
         final Map<Integer, LineData> map =
-                codaDocHead.getAnalysisLineDataByLineNumber();
+                codaDocHeadIncInvoiceIta.getAnalysisLineDataByLineNumber();
 
         // then
         assertThat(map).hasSize(1);

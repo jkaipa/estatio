@@ -12,7 +12,7 @@ import org.apache.isis.applib.services.queryresultscache.QueryResultsCache;
 
 import org.estatio.module.capex.dom.invoice.IncomingInvoice;
 import org.estatio.module.capex.dom.util.CountryUtil;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.coda.dom.doc.CodaDocHeadRepository;
 
 @Mixin(method="prop")
@@ -26,7 +26,7 @@ public class IncomingInvoice_codaDocHead {
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(contributed= Contributed.AS_ASSOCIATION)
     @Property
-    public CodaDocHead prop() {
+    public CodaDocHeadIncInvoiceIta prop() {
         return queryResultsCache.execute(
                 () -> codaDocHeadRepository.findByIncomingInvoice(incomingInvoice),
                 getClass(), "prop", incomingInvoice

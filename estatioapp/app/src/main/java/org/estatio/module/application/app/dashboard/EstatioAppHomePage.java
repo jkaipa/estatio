@@ -60,7 +60,7 @@ import org.estatio.module.capex.dom.payment.PaymentLine;
 import org.estatio.module.task.dom.task.Task;
 import org.estatio.module.task.dom.task.TaskRepository;
 import org.estatio.module.task.dom.task.Task_checkState;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.coda.dom.doc.CodaDocHeadRepository;
 import org.estatio.module.event.dom.Event;
 import org.estatio.module.event.dom.EventRepository;
@@ -318,7 +318,7 @@ public class EstatioAppHomePage {
     /**
      * These indicate a failure to sync.
      *
-     * That is, the IncomingInvoice has hit the "payable" status, and so its corresponding {@link CodaDocHead}'s
+     * That is, the IncomingInvoice has hit the "payable" status, and so its corresponding {@link CodaDocHeadIncInvoiceIta}'s
      * "mark as payable" action has been invoked, which will in turn have triggered Camel to update Coda, and yet
      * for some reason this has failed to happen.
      *
@@ -339,9 +339,9 @@ public class EstatioAppHomePage {
 
     private List<IncomingInvoiceWhenPayableBankTransfer> doGetIncomingInvoicesItaPayableBankTransfer() {
 
-            List<CodaDocHead> codaDocHeads =
+            List<CodaDocHeadIncInvoiceIta> codaDocHeadIncInvoiceItas =
                 codaDocHeadRepository.findByIncomingInvoiceAtPathPrefixAndApprovalStateAndPaymentMethod(AT_PATHS_ITA_OFFICE.get(0), IncomingInvoiceApprovalState.PAYABLE, PaymentMethod.BANK_TRANSFER);
-        return codaDocHeads.stream()
+        return codaDocHeadIncInvoiceItas.stream()
                 .map(IncomingInvoiceWhenPayableBankTransfer::new)
                 .collect(Collectors.toList());
     }
@@ -380,8 +380,9 @@ public class EstatioAppHomePage {
 
     @Collection
     @CollectionLayout(defaultView = "table")
-    public List<CodaDocHead> getInvalidAndUnpaidCodaDocumentsIta() {
-        return codaDocHeadRepository.findUnpaidAndInvalid().stream().sorted(Comparator.comparing(CodaDocHead::getInputDate).reversed()).collect(Collectors.toList());
+    public List<CodaDocHeadIncInvoiceIta> getInvalidAndUnpaidCodaDocumentsIta() {
+        return codaDocHeadRepository.findUnpaidAndInvalid().stream().sorted(Comparator.comparing(
+                CodaDocHeadIncInvoiceIta::getInputDate).reversed()).collect(Collectors.toList());
     }
 
     ////////////////////////////////////////////////////////////

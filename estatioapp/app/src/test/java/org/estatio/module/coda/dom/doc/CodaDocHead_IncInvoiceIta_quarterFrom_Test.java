@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CodaDocHead_quarterFrom_Test {
+public class CodaDocHead_IncInvoiceIta_quarterFrom_Test {
 
     @Test
     public void normal_case() throws Exception {
@@ -53,6 +53,6 @@ public class CodaDocHead_quarterFrom_Test {
     }
 
     void assertThatQuarterFrom(final String codaPeriod, final String expected) {
-        assertThat(CodaDocHead.quarterFrom(codaPeriod)).isEqualTo(expected);
+        assertThat(CodaDocHeadIncInvoiceIta.quarterFrom(codaPeriod)).isEqualTo(expected);
     }
 }

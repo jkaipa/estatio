@@ -27,7 +27,7 @@ import org.apache.isis.applib.annotation.NatureOfService;
 
 import org.estatio.canonical.coda.v2.CodaDocHeadsDto;
 import org.estatio.module.base.platform.applib.DtoFactoryAbstract;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 
 @DomainService(nature = NatureOfService.DOMAIN)
 public class CodaDocHeadsDtoFactory extends DtoFactoryAbstract<List, CodaDocHeadsDto> {
@@ -41,12 +41,12 @@ public class CodaDocHeadsDtoFactory extends DtoFactoryAbstract<List, CodaDocHead
         return internalNewDto(codaDocHeads);
     }
 
-    CodaDocHeadsDto internalNewDto(final List<CodaDocHead> codaDocHeads) {
+    CodaDocHeadsDto internalNewDto(final List<CodaDocHeadIncInvoiceIta> codaDocHeadIncInvoiceItas) {
         final CodaDocHeadsDto codaDocHeadsDto = new CodaDocHeadsDto();
         codaDocHeadsDto.setMajorVersion("2");
         codaDocHeadsDto.setMinorVersion("0");
 
-        codaDocHeads.forEach(codaDocHead -> codaDocHeadsDto.getCodaDocHeads().add(codaDocHeadDtoFactory.newType(codaDocHead)));
+        codaDocHeadIncInvoiceItas.forEach(codaDocHead -> codaDocHeadsDto.getCodaDocHeads().add(codaDocHeadDtoFactory.newType(codaDocHead)));
         return codaDocHeadsDto;
     }
 

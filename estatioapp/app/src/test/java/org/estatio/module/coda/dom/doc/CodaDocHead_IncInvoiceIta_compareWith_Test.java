@@ -15,17 +15,17 @@ import org.estatio.module.financial.dom.BankAccount;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CodaDocHead_compareWith_Test {
+public class CodaDocHead_IncInvoiceIta_compareWith_Test {
 
     @Rule
     public JUnitRuleMockery2 context = JUnitRuleMockery2.createFor(JUnitRuleMockery2.Mode.INTERFACES_AND_CLASSES);
 
-    CodaDocHead codaDocHead;
+    CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta;
     CodaDocLine summaryDocLine;
     CodaDocLine analysisDocLine;
     CodaDocLine analysisDocLine2;
 
-    CodaDocHead existing;
+    CodaDocHeadIncInvoiceIta existing;
     CodaDocLine existingSummaryDocLine;
     CodaDocLine existingAnalysisDocLine;
     CodaDocLine existingAnalysisDocLine2;
@@ -33,19 +33,19 @@ public class CodaDocHead_compareWith_Test {
     @Before
     public void setUp() throws Exception {
 
-        existing = new CodaDocHead("IT01", "FR-GEN", "1234", (short)1, null, null, null, null, "SHA256_1", "");
+        existing = new CodaDocHeadIncInvoiceIta("IT01", "FR-GEN", "1234", (short)1, null, null, null, null, "SHA256_1", "");
 
         existingSummaryDocLine = addLine(existing, 1, LineType.SUMMARY);
         existingAnalysisDocLine = addLine(existing, 2, LineType.ANALYSIS);
 
 
-        codaDocHead = new CodaDocHead("IT01", "FR-GEN", "1234", (short)2, null, null, null, null, "SHA256_2", "");
+        codaDocHeadIncInvoiceIta = new CodaDocHeadIncInvoiceIta("IT01", "FR-GEN", "1234", (short)2, null, null, null, null, "SHA256_2", "");
 
-        summaryDocLine = addLine(codaDocHead, 1, LineType.SUMMARY);
-        analysisDocLine = addLine(codaDocHead, 2, LineType.ANALYSIS);
+        summaryDocLine = addLine(codaDocHeadIncInvoiceIta, 1, LineType.SUMMARY);
+        analysisDocLine = addLine(codaDocHeadIncInvoiceIta, 2, LineType.ANALYSIS);
     }
 
-    CodaDocLine addLine(final CodaDocHead docHead, final int lineNum, final LineType lineType) {
+    CodaDocLine addLine(final CodaDocHeadIncInvoiceIta docHead, final int lineNum, final LineType lineType) {
         CodaDocLine codaDocLine = new CodaDocLine(docHead, lineNum, lineType, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         docHead.getLines().add(codaDocLine);
         return codaDocLine;
@@ -55,44 +55,44 @@ public class CodaDocHead_compareWith_Test {
     public void when_no_previous() throws Exception {
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(null);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(null);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.NO_PREVIOUS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.NO_PREVIOUS);
     }
 
     @Test
     public void when_same() throws Exception {
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(codaDocHead);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(codaDocHeadIncInvoiceIta);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.SAME);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.SAME);
     }
 
     @Test
     public void when_differs_but_same_by_sha256() throws Exception {
         // given
-        existing.setSha256(codaDocHead.getSha256());
+        existing.setSha256(codaDocHeadIncInvoiceIta.getSha256());
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.SAME);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.SAME);
     }
 
     @Test
     public void when_replacement_missing_summary_line() throws Exception {
 
         // given
-        codaDocHead.getLines().remove(summaryDocLine);
+        codaDocHeadIncInvoiceIta.getLines().remove(summaryDocLine);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Replacement has no summary doc line");
     }
 
@@ -103,10 +103,10 @@ public class CodaDocHead_compareWith_Test {
         existing.getLines().remove(existingSummaryDocLine);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Previous had no summary doc line");
     }
 
@@ -123,24 +123,24 @@ public class CodaDocHead_compareWith_Test {
         existing.setIncomingInvoice(incomingInvoice);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): Supplier bank account has changed");
 
         // and when
         incomingInvoice.setApprovalState(IncomingInvoiceApprovalState.PAID);
-        comparison = codaDocHead.compareWith(existing);
+        comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
         // then also
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): Supplier bank account has changed");
 
         // but when
         incomingInvoice.setApprovalState(IncomingInvoiceApprovalState.PENDING_CODA_BOOKS_CHECK); // last state before payable
-        comparison = codaDocHead.compareWith(existing);
+        comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
     }
 
     @Test
@@ -153,10 +153,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setSupplierBankAccountValidationStatus(ValidationStatus.VALID);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 
@@ -169,10 +169,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setDocSumTax(BigDecimal.TEN);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): Doc sum tax (VAT amount) has changed");
     }
 
@@ -185,10 +185,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setDocValue(BigDecimal.TEN);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): Doc value (gross amount) has changed");
     }
 
@@ -203,10 +203,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setMediaCodeValidationStatus(ValidationStatus.VALID);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): Media code (payment method) has changed");
     }
 
@@ -221,10 +221,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setMediaCodeValidationStatus(ValidationStatus.VALID);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 
@@ -237,10 +237,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setDueDate(LocalDate.now().plusDays(-1));
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): Due date has changed");
     }
 
@@ -253,10 +253,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setValueDate(LocalDate.now().plusDays(-1));
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): Value date has changed");
     }
 
@@ -269,10 +269,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setUserRef1("20020020");
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): User Ref 1 (bar code) has changed");
     }
 
@@ -285,10 +285,10 @@ public class CodaDocHead_compareWith_Test {
         existingSummaryDocLine.setDescription("some previous description");
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_INVALIDATING_APPROVALS);
         assertThat(comparison.getReason()).isEqualTo("Line #1 (SUMMARY): Description has changed");
     }
 
@@ -297,13 +297,13 @@ public class CodaDocHead_compareWith_Test {
     public void when_some_other_difference() throws Exception {
 
         // given
-        assertThat(codaDocHead.getCodaTimeStamp()).isNotEqualTo(existing.getCodaTimeStamp());
+        assertThat(codaDocHeadIncInvoiceIta.getCodaTimeStamp()).isNotEqualTo(existing.getCodaTimeStamp());
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
     }
 
     @Test
@@ -313,23 +313,23 @@ public class CodaDocHead_compareWith_Test {
         existingAnalysisDocLine2 = addLine(existing, 3, LineType.ANALYSIS);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 
     @Test
     public void when_more_analysis_lines() throws Exception {
         // given
-        analysisDocLine2 = addLine(codaDocHead, 3, LineType.ANALYSIS);
+        analysisDocLine2 = addLine(codaDocHeadIncInvoiceIta, 3, LineType.ANALYSIS);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 
@@ -340,10 +340,10 @@ public class CodaDocHead_compareWith_Test {
         existingAnalysisDocLine.setDescription("some previous description");
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 
@@ -354,10 +354,10 @@ public class CodaDocHead_compareWith_Test {
         existingAnalysisDocLine.setDocValue(BigDecimal.TEN);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 
@@ -368,10 +368,10 @@ public class CodaDocHead_compareWith_Test {
         existingAnalysisDocLine.setDocSumTax(BigDecimal.TEN);
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 
@@ -382,10 +382,10 @@ public class CodaDocHead_compareWith_Test {
         existingAnalysisDocLine.setDueDate(LocalDate.now().plusDays(-1));
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 
@@ -396,10 +396,10 @@ public class CodaDocHead_compareWith_Test {
         existingAnalysisDocLine.setValueDate(LocalDate.now().plusDays(-1));
 
         // when
-        CodaDocHead.Comparison comparison = codaDocHead.compareWith(existing);
+        CodaDocHeadIncInvoiceIta.Comparison comparison = codaDocHeadIncInvoiceIta.compareWith(existing);
 
         // then
-        assertThat(comparison.getType()).isEqualTo(CodaDocHead.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
+        assertThat(comparison.getType()).isEqualTo(CodaDocHeadIncInvoiceIta.Comparison.Type.DIFFERS_RETAIN_APPROVALS);
         assertThat(comparison.getReason()).isNull();
     }
 

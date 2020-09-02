@@ -8,16 +8,16 @@ import org.junit.Test;
 
 import org.apache.isis.applib.services.repository.RepositoryService;
 
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.coda.dom.doc.CodaDocHeadRepository;
 
-public class CodaDocHeadRepository_integtest extends CodaModuleIntegTestAbstract {
+public class CodaDocHeadIncInvoiceItaRepository_integtest extends CodaModuleIntegTestAbstract {
 
     @Test
     public void find_available_works() throws Exception {
 
         // given
-        CodaDocHead cdh1 = new CodaDocHead("X", "Y", "Z", Short.valueOf("1"), LocalDate.now(), LocalDate.now(), "", "", "", "");
+        CodaDocHeadIncInvoiceIta cdh1 = new CodaDocHeadIncInvoiceIta("X", "Y", "Z", Short.valueOf("1"), LocalDate.now(), LocalDate.now(), "", "", "", "");
         repositoryService.persistAndFlush(cdh1);
         // when
         // then

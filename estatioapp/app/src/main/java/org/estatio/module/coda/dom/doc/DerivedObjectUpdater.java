@@ -64,7 +64,7 @@ public class DerivedObjectUpdater {
     static final BudgetItem NULL_BUDGET_ITEM = null;
 
     IncomingInvoice upsertIncomingInvoice(
-            final CodaDocHead docHead,
+            final CodaDocHeadIncInvoiceIta docHead,
             final Memento previousMemento,
             final boolean createIfDoesNotExist) {
 
@@ -337,7 +337,7 @@ public class DerivedObjectUpdater {
             final CodaDocLine docLine,
             final IncomingInvoice incomingInvoice) {
 
-        final CodaDocHead docHead = docLine.getDocHead();
+        final CodaDocHeadIncInvoiceIta docHead = docLine.getDocHead();
         final String periodFromDocHead = Util.asFinancialYear(docHead.getCodaPeriod());
         final Property propertyFromDocHead = docHead.getSummaryLineAccountEl3Property(LineCache.DEFAULT);
 
@@ -397,7 +397,7 @@ public class DerivedObjectUpdater {
      *
      */
     void updatePaperclip(
-            final CodaDocHead docHead,
+            final CodaDocHeadIncInvoiceIta docHead,
             final Memento previous,
             final boolean createIfDoesNotExist,
             final ErrorSet softErrors) {
@@ -558,7 +558,7 @@ public class DerivedObjectUpdater {
      * nb: note that the task description won't be updated if awaiting approval and there are only soft errors.
      */
     void tryUpdatePendingTaskIfRequired(
-            final CodaDocHead docHead,
+            final CodaDocHeadIncInvoiceIta docHead,
             final ErrorSet errors) {
 
         final IncomingInvoice incomingInvoice = derivedObjectLookup.invoiceIfAnyFrom(docHead);

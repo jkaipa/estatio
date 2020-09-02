@@ -145,7 +145,7 @@ public class CodaDocLine implements Comparable<CodaDocLine>, HasAtPath {
     }
 
     public CodaDocLine(
-            final CodaDocHead docHead,
+            final CodaDocHeadIncInvoiceIta docHead,
             final int lineNum,
             final LineType lineType,
             final String accountCode,
@@ -241,11 +241,11 @@ public class CodaDocLine implements Comparable<CodaDocLine>, HasAtPath {
     @Property
     @PropertyLayout(hidden = Where.REFERENCES_PARENT)
     @Getter @Setter
-    private CodaDocHead docHead;
+    private CodaDocHeadIncInvoiceIta docHead;
 
     @Override
     public String getAtPath() {
-        final CodaDocHead hasAtPath = getDocHead();
+        final CodaDocHeadIncInvoiceIta hasAtPath = getDocHead();
         return hasAtPath != null
                 ? hasAtPath.getAtPath()
                 : ApplicationTenancyLevel.ROOT.getPath();
@@ -614,7 +614,7 @@ public class CodaDocLine implements Comparable<CodaDocLine>, HasAtPath {
     private IncomingInvoiceItem incomingInvoiceItem;
 
     /**
-     * Derived from parent {@link CodaDocHead#getHandling()}, for performance.
+     * Derived from parent {@link CodaDocHeadIncInvoiceIta#getHandling()}, for performance.
      */
     @Column(allowsNull = "false", length = 30)
     @Property()

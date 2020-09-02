@@ -7,46 +7,46 @@ import org.estatio.canonical.coda.v2.CodaDocHeadDto;
 import org.estatio.canonical.coda.v2.CodaDocHeadType;
 import org.estatio.canonical.common.v2.CodaDocKey;
 import org.estatio.module.base.platform.applib.DtoFactoryAbstract;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 
 @DomainService(
         nature = NatureOfService.DOMAIN,
         objectType = "coda.canonical.v2.CodaDocHeadDtoFactory"
 )
-public class CodaDocHeadDtoFactory extends DtoFactoryAbstract<CodaDocHead, CodaDocHeadDto> {
+public class CodaDocHeadDtoFactory extends DtoFactoryAbstract<CodaDocHeadIncInvoiceIta, CodaDocHeadDto> {
 
     public CodaDocHeadDtoFactory() {
-        super(CodaDocHead.class, CodaDocHeadDto.class);
+        super(CodaDocHeadIncInvoiceIta.class, CodaDocHeadDto.class);
     }
 
-    protected CodaDocHeadDto newDto(final CodaDocHead codaDocHead) {
+    protected CodaDocHeadDto newDto(final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta) {
         final CodaDocHeadDto dto = new CodaDocHeadDto();
         dto.setMajorVersion("2");
         dto.setMinorVersion("0");
 
-        copyOver(codaDocHead, dto);
+        copyOver(codaDocHeadIncInvoiceIta, dto);
 
         return dto;
     }
 
-    CodaDocHeadType newType(final CodaDocHead codaDocHead) {
+    CodaDocHeadType newType(final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta) {
         final CodaDocHeadType dto = new CodaDocHeadType();
-        copyOver(codaDocHead, dto);
+        copyOver(codaDocHeadIncInvoiceIta, dto);
         return dto;
     }
 
-    private void copyOver(final CodaDocHead codaDocHead, final CodaDocHeadType dto) {
-        dto.setSelf(mappingHelper.oidDtoFor(codaDocHead));
+    private void copyOver(final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta, final CodaDocHeadType dto) {
+        dto.setSelf(mappingHelper.oidDtoFor(codaDocHeadIncInvoiceIta));
 
         final CodaDocKey docKey = new CodaDocKey();
-        docKey.setCmpCode(codaDocHead.getCmpCode());
-        docKey.setDocCode(codaDocHead.getDocCode());
-        docKey.setDocNum(codaDocHead.getDocNum());
+        docKey.setCmpCode(codaDocHeadIncInvoiceIta.getCmpCode());
+        docKey.setDocCode(codaDocHeadIncInvoiceIta.getDocCode());
+        docKey.setDocNum(codaDocHeadIncInvoiceIta.getDocNum());
         dto.setCodaDocKey(docKey);
 
-        dto.setCodaPeriod(codaDocHead.getCodaPeriod());
+        dto.setCodaPeriod(codaDocHeadIncInvoiceIta.getCodaPeriod());
 
-        dto.setIncomingInvoice(mappingHelper.oidDtoFor(codaDocHead.getIncomingInvoice()));
+        dto.setIncomingInvoice(mappingHelper.oidDtoFor(codaDocHeadIncInvoiceIta.getIncomingInvoice()));
     }
 
 

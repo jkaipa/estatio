@@ -21,7 +21,7 @@ import org.estatio.module.capex.dom.invoice.IncomingInvoiceType;
 import org.estatio.module.capex.dom.invoice.approval.IncomingInvoiceApprovalState;
 import org.estatio.module.capex.dom.orderinvoice.OrderItemInvoiceItemLink;
 import org.estatio.module.capex.dom.orderinvoice.OrderItemInvoiceItemLinkRepository;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.coda.dom.doc.CodaDocHeadRepository;
 import org.estatio.module.invoice.dom.InvoiceItem;
 
@@ -43,9 +43,9 @@ public class IncomingInvoiceDtoFactory extends DtoFactoryAbstract<IncomingInvoic
 
         dto.setSelf(mappingHelper.oidDtoFor(incomingInvoice));
 
-        final CodaDocHead codaDocHeadIfAny = codaDocHeadRepository.findByIncomingInvoice(incomingInvoice);
+        final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceItaIfAny = codaDocHeadRepository.findByIncomingInvoice(incomingInvoice);
 
-        dto.setCodaDocHead(mappingHelper.oidDtoFor(codaDocHeadIfAny));
+        dto.setCodaDocHead(mappingHelper.oidDtoFor(codaDocHeadIncInvoiceItaIfAny));
         dto.setAtPath(incomingInvoice.getAtPath());
         dto.setSellerBankAccount(mappingHelper.oidDtoFor(incomingInvoice.getBankAccount()));
         dto.setBuyerParty(mappingHelper.oidDtoFor(incomingInvoice.getBuyer()));

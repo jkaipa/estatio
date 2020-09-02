@@ -17,7 +17,7 @@ import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CodaDocHeadRepository_replace_Test {
+public class CodaDocHeadIncInvoiceItaRepository_replace_Test {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -36,7 +36,7 @@ public class CodaDocHeadRepository_replace_Test {
     CodaDocHeadRepository codaDocHeadRepository;
 
 
-    CodaDocHead replacementDocHead;
+    CodaDocHeadIncInvoiceIta replacementDocHead;
 
     @Before
     public void setUp() throws Exception {
@@ -46,7 +46,7 @@ public class CodaDocHeadRepository_replace_Test {
 
         sequence = context.sequence("sequence");
 
-        replacementDocHead = new CodaDocHead("IT01", "FR-GEN", "123", (short)1, LocalDate.now(), LocalDate.now(), "2019/1", "books", "SHA256", "");
+        replacementDocHead = new CodaDocHeadIncInvoiceIta("IT01", "FR-GEN", "123", (short)1, LocalDate.now(), LocalDate.now(), "2019/1", "books", "SHA256", "");
 
         context.checking(new Expectations() {{
             allowing(mockTitleService).titleOf(replacementDocHead);
@@ -76,7 +76,7 @@ public class CodaDocHeadRepository_replace_Test {
         }});
 
         // when
-        final CodaDocHead docHead = codaDocHeadRepository.persistAsReplacementIfRequired(replacementDocHead);
+        final CodaDocHeadIncInvoiceIta docHead = codaDocHeadRepository.persistAsReplacementIfRequired(replacementDocHead);
 
         // then
         assertThat(docHead).isSameAs(replacementDocHead);
@@ -87,7 +87,7 @@ public class CodaDocHeadRepository_replace_Test {
     public void when_does_exist() throws Exception {
 
         // given
-        final CodaDocHead originalDocHead = new CodaDocHead();
+        final CodaDocHeadIncInvoiceIta originalDocHead = new CodaDocHeadIncInvoiceIta();
 
         // expecting
         context.checking(new Expectations() {{
@@ -108,7 +108,7 @@ public class CodaDocHeadRepository_replace_Test {
         }});
 
         // when
-        final CodaDocHead nextDocHead = codaDocHeadRepository.persistAsReplacementIfRequired(replacementDocHead);
+        final CodaDocHeadIncInvoiceIta nextDocHead = codaDocHeadRepository.persistAsReplacementIfRequired(replacementDocHead);
 
         // then
         assertThat(nextDocHead).isNotSameAs(originalDocHead);

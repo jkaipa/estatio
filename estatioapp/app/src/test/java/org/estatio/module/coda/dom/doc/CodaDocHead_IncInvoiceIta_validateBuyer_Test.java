@@ -20,7 +20,7 @@ import org.estatio.module.party.dom.role.PartyRoleTypeRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CodaDocHead_validateBuyer_Test {
+public class CodaDocHead_IncInvoiceIta_validateBuyer_Test {
 
     @Rule
     public JUnitRuleMockery2 context = JUnitRuleMockery2.createFor(JUnitRuleMockery2.Mode.INTERFACES_AND_CLASSES);
@@ -35,13 +35,13 @@ public class CodaDocHead_validateBuyer_Test {
     Organisation organisationWithoutRole;
 
 
-    CodaDocHead codaDocHead;
+    CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta;
 
     @Before
     public void setUp() throws Exception {
-        codaDocHead = new CodaDocHead("IT01", null, null, (short)1, null, null, null, null, "SHA256", "");
-        codaDocHead.partyRepository = mockPartyRepository;
-        codaDocHead.partyRoleTypeRepository = mockPartyRoleTypeRepository;
+        codaDocHeadIncInvoiceIta = new CodaDocHeadIncInvoiceIta("IT01", null, null, (short)1, null, null, null, null, "SHA256", "");
+        codaDocHeadIncInvoiceIta.partyRepository = mockPartyRepository;
+        codaDocHeadIncInvoiceIta.partyRoleTypeRepository = mockPartyRoleTypeRepository;
 
         // given
         ecpRoleType = new PartyRoleType();
@@ -60,8 +60,8 @@ public class CodaDocHead_validateBuyer_Test {
         organisationWithoutRole = new Organisation();
 
 
-        assertThat(codaDocHead.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.NOT_CHECKED);
-        assertThat(codaDocHead.getCmpCodeBuyer()).isNull();
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.NOT_CHECKED);
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeBuyer()).isNull();
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     assertThat(organisationWithRole.hasPartyRoleType(ecpRoleType)).isTrue();
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     assertThat(organisationWithoutRole.hasPartyRoleType(ecpRoleType)).isFalse();
@@ -77,12 +77,12 @@ public class CodaDocHead_validateBuyer_Test {
         }});
 
         // when
-        codaDocHead.validateBuyer();
+        codaDocHeadIncInvoiceIta.validateBuyer();
 
         // then
-        assertThat(codaDocHead.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.INVALID);
-        assertThat(codaDocHead.getCmpCodeBuyer()).isNull();
-        assertThat(codaDocHead.getReasonInvalid()).isEqualTo("No buyer party found for cmpCode 'IT01'");
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.INVALID);
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeBuyer()).isNull();
+        assertThat(codaDocHeadIncInvoiceIta.getReasonInvalid()).isEqualTo("No buyer party found for cmpCode 'IT01'");
     }
 
     @Test
@@ -95,12 +95,12 @@ public class CodaDocHead_validateBuyer_Test {
         }});
 
         // when
-        codaDocHead.validateBuyer();
+        codaDocHeadIncInvoiceIta.validateBuyer();
 
         // then
-        assertThat(codaDocHead.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.INVALID);
-        assertThat(codaDocHead.getCmpCodeBuyer()).isNull();
-        assertThat(codaDocHead.getReasonInvalid()).isEqualTo("Party found for cmpCode 'IT01' is not an Organisation");
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.INVALID);
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeBuyer()).isNull();
+        assertThat(codaDocHeadIncInvoiceIta.getReasonInvalid()).isEqualTo("Party found for cmpCode 'IT01' is not an Organisation");
     }
 
     @Test
@@ -117,12 +117,12 @@ public class CodaDocHead_validateBuyer_Test {
         }});
 
         // when
-        codaDocHead.validateBuyer();
+        codaDocHeadIncInvoiceIta.validateBuyer();
 
         // then
-        assertThat(codaDocHead.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.INVALID);
-        assertThat(codaDocHead.getCmpCodeBuyer()).isNull();
-        assertThat(codaDocHead.getReasonInvalid()).isEqualTo("Organisation 'IT01' does not have ECP role");
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.INVALID);
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeBuyer()).isNull();
+        assertThat(codaDocHeadIncInvoiceIta.getReasonInvalid()).isEqualTo("Organisation 'IT01' does not have ECP role");
     }
 
     @Test
@@ -138,12 +138,12 @@ public class CodaDocHead_validateBuyer_Test {
         }});
 
         // when
-        codaDocHead.validateBuyer();
+        codaDocHeadIncInvoiceIta.validateBuyer();
 
         // then
-        assertThat(codaDocHead.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.VALID);
-        assertThat(codaDocHead.getCmpCodeBuyer()).isEqualTo(organisationWithRole);
-        assertThat(codaDocHead.getReasonInvalid()).isNull();
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeValidationStatus()).isEqualTo(ValidationStatus.VALID);
+        assertThat(codaDocHeadIncInvoiceIta.getCmpCodeBuyer()).isEqualTo(organisationWithRole);
+        assertThat(codaDocHeadIncInvoiceIta.getReasonInvalid()).isNull();
     }
 
 }

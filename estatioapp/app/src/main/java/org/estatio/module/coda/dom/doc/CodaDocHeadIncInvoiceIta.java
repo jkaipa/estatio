@@ -94,37 +94,37 @@ import lombok.val;
         schema = "dbo"
 )
 @Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
-@Discriminator("org.estatio.module.coda.dom.doc.CodaDocHead")
+@Discriminator("org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta")
 @Queries({
         @Query(
                 name = "findByCmpCodeAndDocCodeAndDocNum", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE cmpCode == :cmpCode "
                         + "   && docCode == :docCode "
                         + "   && docNum  == :docNum "),
         @Query(
                 name = "findByIncomingInvoice", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE incomingInvoice == :incomingInvoice "),
         @Query(
                 name = "findByCodaPeriodQuarterAndHandling", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE codaPeriodQuarter == :codaPeriodQuarter "
                         + "   && handling          == :handling "),
         @Query(
                 name = "findByCodaPeriodQuarterAndHandlingAndValid", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE codaPeriodQuarter == :codaPeriodQuarter "
                         + "   && handling          == :handling "
                         + "   && reasonInvalid     == null "),
         @Query(
                 name = "findByCodaPeriodQuarterAndHandlingAndNotValid", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE codaPeriodQuarter == :codaPeriodQuarter "
                         + "   && handling          == :handling "
                         + "   && reasonInvalid     != null "
@@ -132,7 +132,7 @@ import lombok.val;
         @Query(
                 name = "findByHandlingAndStatPayNotEqualToAndNotValid", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE handling          == :handling "
                         + "   && statPay           != :statPay "
                         + "   && reasonInvalid     != null "
@@ -140,13 +140,13 @@ import lombok.val;
         @Query(
                 name = "findByStatPay", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE statPay          == :statPay "
         ),
         @Query(
                 name = "findByCmpCodeAndIncomingInvoiceApprovalStateIsNotFinal", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE cmpCode    == :cmpCode "
                         + "   && (incomingInvoice.approvalState != 'PAID' && "
                         + "       incomingInvoice.approvalState != 'DISCARDED') "
@@ -154,20 +154,20 @@ import lombok.val;
         @Query(
                 name = "findByIncomingInvoice", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE incomingInvoice == :incomingInvoice "
         ),
         @Query(
                 name = "findByIncomingInvoiceAtPathPrefixAndApprovalState", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE incomingInvoice.approvalState == :approvalState "
                         + "   && incomingInvoice.applicationTenancyPath.startsWith(:atPathPrefix) "
         ),
         @Query(
                 name = "findByIncomingInvoiceAtPathPrefixAndApprovalStateAndPaymentMethod", language = "JDOQL",
                 value = "SELECT "
-                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHead "
+                        + "FROM org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta "
                         + "WHERE incomingInvoice.approvalState == :approvalState "
                         + "   && incomingInvoice.paymentMethod == :paymentMethod "
                         + "   && incomingInvoice.applicationTenancyPath.startsWith(:atPathPrefix) "
@@ -185,14 +185,14 @@ import lombok.val;
         bookmarking = BookmarkPolicy.AS_ROOT
 )
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
-public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaDocHead>, HasAtPath {
+public class CodaDocHeadIncInvoiceIta extends CodaDocHeadAbstract implements Comparable<CodaDocHeadIncInvoiceIta>, HasAtPath {
 
     static final CodaPeriodParser parser = new CodaPeriodParser();
 
-    public CodaDocHead() {
+    public CodaDocHeadIncInvoiceIta() {
     }
 
-    public CodaDocHead(
+    public CodaDocHeadIncInvoiceIta(
             final String cmpCode,
             final String docCode,
             final String docNum,
@@ -426,7 +426,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
     private Handling handling;
 
     @Action(semantics = SemanticsOf.IDEMPOTENT)
-    public CodaDocHead handleAs(Handling handling) {
+    public CodaDocHeadIncInvoiceIta handleAs(Handling handling) {
         // in case invoked directly
         if (this.getHandling() == Handling.SYNCED) {
             return this;
@@ -517,7 +517,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
     }
 
     @Programmatic
-    public CodaDocHead revalidate() {
+    public CodaDocHeadIncInvoiceIta revalidate() {
 
         final ErrorSet errors = new ErrorSet();
         final boolean syncIfValid = false;
@@ -528,7 +528,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
     }
 
     @Programmatic
-    public CodaDocHead kick() {
+    public CodaDocHeadIncInvoiceIta kick() {
 
         final ErrorSet errors = new ErrorSet();
         final boolean syncIfValid = true;
@@ -539,7 +539,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
     }
 
     @Programmatic
-    public CodaDocHead revalidateOnly() {
+    public CodaDocHeadIncInvoiceIta revalidateOnly() {
         resetValidationAndDerivations();
         if (getHandling() == Handling.EXCLUDED) {
             return this;
@@ -816,7 +816,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
         }
     }
 
-    private void tryTransitionToPaidWhenPaidInCoda(final IncomingInvoice incomingInvoice, final CodaDocHead docHead) {
+    private void tryTransitionToPaidWhenPaidInCoda(final IncomingInvoice incomingInvoice, final CodaDocHeadIncInvoiceIta docHead) {
 
         if (incomingInvoice == null) {
             return;
@@ -1110,7 +1110,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
     }
 
     @Programmatic
-    public boolean isSameAs(final CodaDocHead other) {
+    public boolean isSameAs(final CodaDocHeadIncInvoiceIta other) {
         if (other == null) {
             return false;
         }
@@ -1125,12 +1125,12 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
                Objects.equals(getStatPay(), other.getStatPay());
     }
 
-    private boolean legacyAnalysisLineWithNullDocValue_StateDiffers(final CodaDocHead one, final CodaDocHead other) {
+    private boolean legacyAnalysisLineWithNullDocValue_StateDiffers(final CodaDocHeadIncInvoiceIta one, final CodaDocHeadIncInvoiceIta other) {
         return one.isLegacyAnalysisLineWithNullDocValue() && !other.isLegacyAnalysisLineWithNullDocValue();
     }
 
     @Programmatic
-    public Comparison compareWith(final CodaDocHead other) {
+    public Comparison compareWith(final CodaDocHeadIncInvoiceIta other) {
             if (other == null) {
                 return Comparison.noOther();
             }
@@ -1196,7 +1196,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
 
     //region > compareTo, toString
     @Override
-    public int compareTo(final CodaDocHead other) {
+    public int compareTo(final CodaDocHeadIncInvoiceIta other) {
         return ComparisonChain.start()
                 .compare(getCmpCode(), other.getCmpCode())
                 .compare(getDocCode(), other.getDocCode())
@@ -1276,7 +1276,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
                 final String collectionId,
                 final Class<?> collectionType,
                 final List<String> propertyIds) {
-            if (parent instanceof CodaDocHead && "summaryLines".equals(collectionId)) {
+            if (parent instanceof CodaDocHeadIncInvoiceIta && "summaryLines".equals(collectionId)) {
                 return Arrays.asList(
                         "docHead"
                         , "lineNum"
@@ -1295,7 +1295,7 @@ public class CodaDocHead extends CodaDocHeadAbstract implements Comparable<CodaD
                         , "reasonInvalid"
                 );
             }
-            if (parent instanceof CodaDocHead && "analysisLines".equals(collectionId)) {
+            if (parent instanceof CodaDocHeadIncInvoiceIta && "analysisLines".equals(collectionId)) {
                 return Arrays.asList(
                         "docHead"
                         , "lineNum"

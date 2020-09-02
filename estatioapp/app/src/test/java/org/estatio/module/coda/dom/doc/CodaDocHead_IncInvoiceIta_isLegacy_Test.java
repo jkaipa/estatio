@@ -9,34 +9,34 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CodaDocHead_isLegacy_Test {
+public class CodaDocHead_IncInvoiceIta_isLegacy_Test {
 
-    CodaDocHead codaDocHead;
+    CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta;
     CodaDocLine summaryLine;
     CodaDocLine analysisLine;
 
     @Before
     public void setUp() throws Exception {
-        codaDocHead = new CodaDocHead();
-        codaDocHead.setCmpCode("IT01");
-        codaDocHead.setDocCode("FR-GEN");
-        codaDocHead.setDocNum("12345");
-        codaDocHead.setLines(Sets.newTreeSet());
+        codaDocHeadIncInvoiceIta = new CodaDocHeadIncInvoiceIta();
+        codaDocHeadIncInvoiceIta.setCmpCode("IT01");
+        codaDocHeadIncInvoiceIta.setDocCode("FR-GEN");
+        codaDocHeadIncInvoiceIta.setDocNum("12345");
+        codaDocHeadIncInvoiceIta.setLines(Sets.newTreeSet());
 
-        summaryLine = newLine(this.codaDocHead, 1, LineType.SUMMARY);
-        analysisLine = newLine(this.codaDocHead, 2, LineType.ANALYSIS);
+        summaryLine = newLine(this.codaDocHeadIncInvoiceIta, 1, LineType.SUMMARY);
+        analysisLine = newLine(this.codaDocHeadIncInvoiceIta, 2, LineType.ANALYSIS);
     }
 
     private CodaDocLine newLine(
-            final CodaDocHead codaDocHead,
+            final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta,
             final int lineNum,
             final LineType lineType) {
         final CodaDocLine line = new CodaDocLine();
         line.setLineType(lineType);
-        line.setDocHead(codaDocHead);
+        line.setDocHead(codaDocHeadIncInvoiceIta);
         line.setLineNum(lineNum);
 
-        codaDocHead.getLines().add(line);
+        codaDocHeadIncInvoiceIta.getLines().add(line);
         return line;
     }
 
@@ -47,7 +47,7 @@ public class CodaDocHead_isLegacy_Test {
         analysisLine.setDocValue(null);
 
         // when, then
-        assertThat(codaDocHead.isLegacyAnalysisLineWithNullDocValue()).isTrue();
+        assertThat(codaDocHeadIncInvoiceIta.isLegacyAnalysisLineWithNullDocValue()).isTrue();
 
     }
 
@@ -58,7 +58,7 @@ public class CodaDocHead_isLegacy_Test {
         analysisLine.setDocValue(BigDecimal.ONE);
 
         // when, then
-        assertThat(codaDocHead.isLegacyAnalysisLineWithNullDocValue()).isFalse();
+        assertThat(codaDocHeadIncInvoiceIta.isLegacyAnalysisLineWithNullDocValue()).isFalse();
     }
 
     @Test
@@ -68,16 +68,16 @@ public class CodaDocHead_isLegacy_Test {
         analysisLine.setDocValue(BigDecimal.ZERO);  // can even be zero, still not legacy.
 
         // when, then
-        assertThat(codaDocHead.isLegacyAnalysisLineWithNullDocValue()).isFalse();
+        assertThat(codaDocHeadIncInvoiceIta.isLegacyAnalysisLineWithNullDocValue()).isFalse();
     }
 
     @Test
     public void given_no_lines_then_not_legacy() throws Exception {
         // given
-        codaDocHead.getLines().clear();
+        codaDocHeadIncInvoiceIta.getLines().clear();
 
         // when, then
-        assertThat(codaDocHead.isLegacyAnalysisLineWithNullDocValue()).isFalse();
+        assertThat(codaDocHeadIncInvoiceIta.isLegacyAnalysisLineWithNullDocValue()).isFalse();
     }
 
 }

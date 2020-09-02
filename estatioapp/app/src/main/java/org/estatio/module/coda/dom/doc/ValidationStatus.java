@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Whether an element of a {@link CodaDocLine}, or whether a {@link CodaDocHead} overall, is valid or not.
+ * Whether an element of a {@link CodaDocLine}, or whether a {@link CodaDocHeadIncInvoiceIta} overall, is valid or not.
  * The latter is derived as an aggregate of the former.
  *
  * <p>
@@ -13,13 +13,13 @@ import java.util.List;
  */
 public enum ValidationStatus {
     /**
-     * For {@link CodaDocHead}s, indicates that all elements of all {@link CodaDocLine}s are valid.
+     * For {@link CodaDocHeadIncInvoiceIta}s, indicates that all elements of all {@link CodaDocLine}s are valid.
      */
     VALID,
     /**
      * For {@link CodaDocLine}s, indicates that some element of the doc line is not valid.
      *
-     * For {@link CodaDocHead}s, indicates that one or more {@link CodaDocLine}s has an invalid element.
+     * For {@link CodaDocHeadIncInvoiceIta}s, indicates that one or more {@link CodaDocLine}s has an invalid element.
      */
     INVALID,
     /**

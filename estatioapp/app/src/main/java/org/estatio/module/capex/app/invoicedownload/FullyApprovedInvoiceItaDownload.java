@@ -11,7 +11,7 @@ import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Nature;
 
 import org.estatio.module.capex.dom.invoice.IncomingInvoice;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -46,10 +46,11 @@ public class FullyApprovedInvoiceItaDownload {
 
     public FullyApprovedInvoiceItaDownload(
             final IncomingInvoice invoice,
-            final CodaDocHead codaDocHead
+            final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta
     ){
         this.property = invoice.getProperty()!=null ? invoice.getProperty().getReference() : null;
-        this.codaDocHead = String.format("(%s, %s, %s)", codaDocHead.getCmpCode(), codaDocHead.getDocCode(), codaDocHead.getDocNum());
+        this.codaDocHead = String.format("(%s, %s, %s)", codaDocHeadIncInvoiceIta.getCmpCode(), codaDocHeadIncInvoiceIta
+                .getDocCode(), codaDocHeadIncInvoiceIta.getDocNum());
         this.supplier = invoice.getSeller()!=null ? String.format("%s %s", invoice.getSeller().getReference(), invoice.getSeller().getName()) : null;
         this.invoiceNumber = invoice.getInvoiceNumber();
         this.grossAmount = invoice.getGrossAmount();
@@ -59,7 +60,7 @@ public class FullyApprovedInvoiceItaDownload {
         this.lastApprovedOn = invoice.getMostRecentApproval()
                 .map(IncomingInvoice.ApprovalString::getCompletedOnAsDate)
                 .orElse(null);
-        this.payStatus = codaDocHead.getStatPay();
+        this.payStatus = codaDocHeadIncInvoiceIta.getStatPay();
         this.invoiceApprovalState = invoice.getApprovalState().toString();
     }
 

@@ -22,7 +22,7 @@ import org.estatio.module.invoice.dom.PaymentMethod;
 
 @DomainService(
         nature = NatureOfService.DOMAIN,
-        repositoryFor = CodaDocHead.class,
+        repositoryFor = CodaDocHeadIncInvoiceIta.class,
         objectType = "coda.CodaDocHeadRepository"
 )
 public class CodaDocHeadRepository {
@@ -31,19 +31,19 @@ public class CodaDocHeadRepository {
     static final String STAT_PAY_AVAILABLE = "available";
 
     @Programmatic
-    public java.util.List<CodaDocHead> listAll() {
-        return repositoryService.allInstances(CodaDocHead.class);
+    public java.util.List<CodaDocHeadIncInvoiceIta> listAll() {
+        return repositoryService.allInstances(CodaDocHeadIncInvoiceIta.class);
     }
 
     @Programmatic
-    public CodaDocHead findByCmpCodeAndDocCodeAndDocNum(
+    public CodaDocHeadIncInvoiceIta findByCmpCodeAndDocCodeAndDocNum(
             final String cmpCode,
             final String docCode,
             final String docNum
     ) {
         return repositoryService.uniqueMatch(
                 new org.apache.isis.applib.query.QueryDefault<>(
-                        CodaDocHead.class,
+                        CodaDocHeadIncInvoiceIta.class,
                         "findByCmpCodeAndDocCodeAndDocNum",
                         "cmpCode", cmpCode,
                         "docCode", docCode,
@@ -51,61 +51,62 @@ public class CodaDocHeadRepository {
     }
 
     @Programmatic
-    public CodaDocHead findByCandidate(
-            final CodaDocHead codaDocHead
+    public CodaDocHeadIncInvoiceIta findByCandidate(
+            final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta
     ) {
-        final String cmpCode = codaDocHead.getCmpCode();
-        final String docCode = codaDocHead.getDocCode();
-        final String docNum = codaDocHead.getDocNum();
+        final String cmpCode = codaDocHeadIncInvoiceIta.getCmpCode();
+        final String docCode = codaDocHeadIncInvoiceIta.getDocCode();
+        final String docNum = codaDocHeadIncInvoiceIta.getDocNum();
         return findByCmpCodeAndDocCodeAndDocNum(cmpCode, docCode, docNum);
     }
 
     @Programmatic
-    public CodaDocHead persistAsReplacementIfRequired(final CodaDocHead codaDocHead) {
+    public CodaDocHeadIncInvoiceIta persistAsReplacementIfRequired(final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta) {
         // sanity check
-        if(repositoryService.isPersistent(codaDocHead)) {
+        if(repositoryService.isPersistent(codaDocHeadIncInvoiceIta)) {
             throw new IllegalStateException(
-                    String.format("CodaDocHead '%s' is already persistent", titleService.titleOf(codaDocHead)));
+                    String.format("CodaDocHead '%s' is already persistent", titleService.titleOf(
+                            codaDocHeadIncInvoiceIta)));
         }
 
-        final CodaDocHead existingCodaDocHead = findByCandidate(codaDocHead);
+        final CodaDocHeadIncInvoiceIta existingCodaDocHeadIncInvoiceIta = findByCandidate(codaDocHeadIncInvoiceIta);
 
-        deriveStatPayPaidDateIfRequired(codaDocHead, existingCodaDocHead);
+        deriveStatPayPaidDateIfRequired(codaDocHeadIncInvoiceIta, existingCodaDocHeadIncInvoiceIta);
 
-        if (existingCodaDocHead != null) {
-            delete(existingCodaDocHead);
+        if (existingCodaDocHeadIncInvoiceIta != null) {
+            delete(existingCodaDocHeadIncInvoiceIta);
         }
-        return repositoryService.persistAndFlush(codaDocHead);
+        return repositoryService.persistAndFlush(codaDocHeadIncInvoiceIta);
     }
 
-    void deriveStatPayPaidDateIfRequired(final CodaDocHead codaDocHead, final CodaDocHead existingCodaDocHead) {
-        if (!STAT_PAY_PAID.equals(codaDocHead.getStatPay())) {
+    void deriveStatPayPaidDateIfRequired(final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta, final CodaDocHeadIncInvoiceIta existingCodaDocHeadIncInvoiceIta) {
+        if (!STAT_PAY_PAID.equals(codaDocHeadIncInvoiceIta.getStatPay())) {
             return;
         }
-        if (isPaid(existingCodaDocHead)) {
-            codaDocHead.setStatPayPaidDate(existingCodaDocHead.getStatPayPaidDate());
+        if (isPaid(existingCodaDocHeadIncInvoiceIta)) {
+            codaDocHeadIncInvoiceIta.setStatPayPaidDate(existingCodaDocHeadIncInvoiceIta.getStatPayPaidDate());
             return;
         }
         // else
-        codaDocHead.setStatPayPaidDate(clockService.now());
+        codaDocHeadIncInvoiceIta.setStatPayPaidDate(clockService.now());
     }
 
-    private static boolean isPaid(final CodaDocHead existingCodaDocHead) {
-        if (existingCodaDocHead == null) {
+    private static boolean isPaid(final CodaDocHeadIncInvoiceIta existingCodaDocHeadIncInvoiceIta) {
+        if (existingCodaDocHeadIncInvoiceIta == null) {
             return false;
         }
-        if (!STAT_PAY_PAID.equals(existingCodaDocHead.getStatPay())) {
+        if (!STAT_PAY_PAID.equals(existingCodaDocHeadIncInvoiceIta.getStatPay())) {
             return false;
         }
-        return existingCodaDocHead.getStatPayPaidDate() != null;
+        return existingCodaDocHeadIncInvoiceIta.getStatPayPaidDate() != null;
     }
 
 
     @Programmatic
-    public List<CodaDocHead> findUnpaidAndInvalid() {
+    public List<CodaDocHeadIncInvoiceIta> findUnpaidAndInvalid() {
         return repositoryService.allMatches(
                 new QueryDefault<>(
-                        CodaDocHead.class,
+                        CodaDocHeadIncInvoiceIta.class,
                         "findByHandlingAndStatPayNotEqualToAndNotValid",
                         "statPay", STAT_PAY_PAID,
                         "handling", Handling.INCLUDED
@@ -113,27 +114,27 @@ public class CodaDocHeadRepository {
     }
 
     @Programmatic
-    public List<CodaDocHead> findAvailable() {
+    public List<CodaDocHeadIncInvoiceIta> findAvailable() {
         return repositoryService.allMatches(
                 new QueryDefault<>(
-                        CodaDocHead.class,
+                        CodaDocHeadIncInvoiceIta.class,
                         "findByStatPay",
                         "statPay", STAT_PAY_AVAILABLE
                 ));
     }
 
     @Programmatic
-    public List<CodaDocHead> findByCmpCodeAndIncomingInvoiceApprovalStateIsNotFinal(final String cmpCode) {
+    public List<CodaDocHeadIncInvoiceIta> findByCmpCodeAndIncomingInvoiceApprovalStateIsNotFinal(final String cmpCode) {
         return repositoryService.allMatches(
                 new QueryDefault<>(
-                        CodaDocHead.class,
+                        CodaDocHeadIncInvoiceIta.class,
                         "findByCmpCodeAndIncomingInvoiceApprovalStateIsNotFinal",
                         "cmpCode", cmpCode
                 ));
     }
 
     @Programmatic
-    public List<CodaDocHead> findByCodaPeriodQuarterAndHandlingAndValidity(
+    public List<CodaDocHeadIncInvoiceIta> findByCodaPeriodQuarterAndHandlingAndValidity(
             final String codaPeriodQuarter,
             final Handling handling,
             final Validity validity) {
@@ -141,14 +142,14 @@ public class CodaDocHeadRepository {
         case VALID:
             return repositoryService.allMatches(
                     new org.apache.isis.applib.query.QueryDefault<>(
-                            CodaDocHead.class,
+                            CodaDocHeadIncInvoiceIta.class,
                             "findByCodaPeriodQuarterAndHandlingAndValid",
                             "codaPeriodQuarter", codaPeriodQuarter,
                             "handling", handling));
         case NOT_VALID:
             return repositoryService.allMatches(
                     new org.apache.isis.applib.query.QueryDefault<>(
-                            CodaDocHead.class,
+                            CodaDocHeadIncInvoiceIta.class,
                             "findByCodaPeriodQuarterAndHandlingAndNotValid",
                             "codaPeriodQuarter", codaPeriodQuarter,
                             "handling", handling));
@@ -156,7 +157,7 @@ public class CodaDocHeadRepository {
         default:
             return repositoryService.allMatches(
                     new org.apache.isis.applib.query.QueryDefault<>(
-                            CodaDocHead.class,
+                            CodaDocHeadIncInvoiceIta.class,
                             "findByCodaPeriodQuarterAndHandling",
                             "codaPeriodQuarter", codaPeriodQuarter,
                             "handling", handling));
@@ -164,58 +165,58 @@ public class CodaDocHeadRepository {
     }
 
     @Programmatic
-    public CodaDocHead findByIncomingInvoice(final IncomingInvoice incomingInvoice) {
+    public CodaDocHeadIncInvoiceIta findByIncomingInvoice(final IncomingInvoice incomingInvoice) {
         return repositoryService.uniqueMatch(
                 new QueryDefault<>(
-                        CodaDocHead.class,
+                        CodaDocHeadIncInvoiceIta.class,
                         "findByIncomingInvoice",
                         "incomingInvoice", incomingInvoice
                 )
         );
     }
 
-    public List<CodaDocHead> findByIncomingInvoiceAtPathPrefixAndApprovalState(
+    public List<CodaDocHeadIncInvoiceIta> findByIncomingInvoiceAtPathPrefixAndApprovalState(
             final String atPathPrefix, final IncomingInvoiceApprovalState approvalState) {
 
-        final List<CodaDocHead> codaDocHeads = repositoryService.allMatches(
+        final List<CodaDocHeadIncInvoiceIta> codaDocHeadIncInvoiceItas = repositoryService.allMatches(
                 new QueryDefault<>(
-                        CodaDocHead.class,
+                        CodaDocHeadIncInvoiceIta.class,
                         "findByIncomingInvoiceAtPathPrefixAndApprovalState",
                         "atPathPrefix", atPathPrefix,
                         "approvalState", approvalState));
 
-        prepopulateQueryResultsCacheForMixin(codaDocHeads);
+        prepopulateQueryResultsCacheForMixin(codaDocHeadIncInvoiceItas);
 
-        return codaDocHeads;
+        return codaDocHeadIncInvoiceItas;
     }
 
-    public List<CodaDocHead> findByIncomingInvoiceAtPathPrefixAndApprovalStateAndPaymentMethod(
+    public List<CodaDocHeadIncInvoiceIta> findByIncomingInvoiceAtPathPrefixAndApprovalStateAndPaymentMethod(
             final String atPathPrefix,
             final IncomingInvoiceApprovalState approvalState,
             final PaymentMethod paymentMethod) {
 
-        final List<CodaDocHead> codaDocHeads = repositoryService.allMatches(
+        final List<CodaDocHeadIncInvoiceIta> codaDocHeadIncInvoiceItas = repositoryService.allMatches(
                 new QueryDefault<>(
-                        CodaDocHead.class,
+                        CodaDocHeadIncInvoiceIta.class,
                         "findByIncomingInvoiceAtPathPrefixAndApprovalStateAndPaymentMethod",
                         "atPathPrefix", atPathPrefix,
                         "approvalState", approvalState,
                         "paymentMethod", paymentMethod));
 
-        prepopulateQueryResultsCacheForMixin(codaDocHeads);
+        prepopulateQueryResultsCacheForMixin(codaDocHeadIncInvoiceItas);
 
-        return codaDocHeads;
+        return codaDocHeadIncInvoiceItas;
     }
 
     /**
      * populate the cache, so that IncomingInvoice_codaDocHead
      * (which will be called soon) doesn't need to run a query.
      *
-     * @param codaDocHeads
+     * @param codaDocHeadIncInvoiceItas
      */
-    private void prepopulateQueryResultsCacheForMixin(final List<CodaDocHead> codaDocHeads) {
-        for (final CodaDocHead codaDocHead : codaDocHeads) {
-            queryResultsCache.put(keyFor(codaDocHead.getIncomingInvoice()), codaDocHead);
+    private void prepopulateQueryResultsCacheForMixin(final List<CodaDocHeadIncInvoiceIta> codaDocHeadIncInvoiceItas) {
+        for (final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta : codaDocHeadIncInvoiceItas) {
+            queryResultsCache.put(keyFor(codaDocHeadIncInvoiceIta.getIncomingInvoice()), codaDocHeadIncInvoiceIta);
         }
     }
 
@@ -228,21 +229,21 @@ public class CodaDocHeadRepository {
     QueryResultsCache queryResultsCache;
 
     @Programmatic
-    public boolean deleteIfNoInvoiceAttached(final CodaDocHead codaDocHead) {
+    public boolean deleteIfNoInvoiceAttached(final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta) {
         // sanity check, is already validated at the REST endpoint
-        if (codaDocHead.getIncomingInvoice() == null) {
-            delete(codaDocHead);
+        if (codaDocHeadIncInvoiceIta.getIncomingInvoice() == null) {
+            delete(codaDocHeadIncInvoiceIta);
             return true;
         }
 
         return false;
     }
 
-    private void delete(final CodaDocHead codaDocHead) {
-        for (final CodaDocLine line : Lists.newArrayList(codaDocHead.getLines())) {
+    private void delete(final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta) {
+        for (final CodaDocLine line : Lists.newArrayList(codaDocHeadIncInvoiceIta.getLines())) {
             repositoryService.removeAndFlush(line);
         }
-        repositoryService.removeAndFlush(codaDocHead);
+        repositoryService.removeAndFlush(codaDocHeadIncInvoiceIta);
     }
 
 

@@ -11,7 +11,7 @@ import lombok.Getter;
 public class Memento {
 
     @Getter
-    private final CodaDocHead codaDocHeadIfAny;
+    private final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceItaIfAny;
     @Getter
     private final IncomingInvoice incomingInvoiceIfAny;
     @Getter
@@ -22,21 +22,21 @@ public class Memento {
     private final Paperclip paperclipIfAny;
 
     public Memento(
-            final CodaDocHead codaDocHeadIfAny,
+            final CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceItaIfAny,
             final DerivedObjectLookup derivedObjectLookup) {
 
-        this.codaDocHeadIfAny = codaDocHeadIfAny;
+        this.codaDocHeadIncInvoiceItaIfAny = codaDocHeadIncInvoiceItaIfAny;
 
-        if(this.codaDocHeadIfAny == null) {
+        if(this.codaDocHeadIncInvoiceItaIfAny == null) {
             this.incomingInvoiceIfAny = null;
             this.analysisLineDataByLineNumberIfAny = null;
             this.documentNameIfAny = null;
             this.paperclipIfAny = null;
         } else {
-            this.incomingInvoiceIfAny = codaDocHeadIfAny.getIncomingInvoice();
-            this.analysisLineDataByLineNumberIfAny = codaDocHeadIfAny.getAnalysisLineDataByLineNumber();
-            this.documentNameIfAny = derivedObjectLookup.documentNameIfAnyFrom(codaDocHeadIfAny);
-            this.paperclipIfAny = derivedObjectLookup.paperclipIfAnyFrom(codaDocHeadIfAny);
+            this.incomingInvoiceIfAny = codaDocHeadIncInvoiceItaIfAny.getIncomingInvoice();
+            this.analysisLineDataByLineNumberIfAny = codaDocHeadIncInvoiceItaIfAny.getAnalysisLineDataByLineNumber();
+            this.documentNameIfAny = derivedObjectLookup.documentNameIfAnyFrom(codaDocHeadIncInvoiceItaIfAny);
+            this.paperclipIfAny = derivedObjectLookup.paperclipIfAnyFrom(codaDocHeadIncInvoiceItaIfAny);
         }
     }
 

@@ -13,7 +13,7 @@ import org.apache.isis.core.unittestsupport.jmocking.JUnitRuleMockery2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.estatio.module.coda.dom.doc.CodaDocHeadRepository.STAT_PAY_PAID;
 
-public class CodaDocHeadRepository_deriveStatPayPaidDateIfRequired_Test {
+public class CodaDocHeadIncInvoiceItaRepository_deriveStatPayPaidDateIfRequired_Test {
 
     @Rule
     public JUnitRuleMockery2 context = JUnitRuleMockery2.createFor(JUnitRuleMockery2.Mode.INTERFACES_AND_CLASSES);
@@ -21,15 +21,15 @@ public class CodaDocHeadRepository_deriveStatPayPaidDateIfRequired_Test {
     @Mock
     ClockService mockClockService;
     @Mock
-    CodaDocHead mockPrevious;
+    CodaDocHeadIncInvoiceIta mockPrevious;
 
-    CodaDocHead codaDocHead;
+    CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta;
 
     CodaDocHeadRepository codaDocHeadRepository;
 
     @Before
     public void setUp() throws Exception {
-        codaDocHead = new CodaDocHead();
+        codaDocHeadIncInvoiceIta = new CodaDocHeadIncInvoiceIta();
 
         codaDocHeadRepository = new CodaDocHeadRepository();
         codaDocHeadRepository.clockService = mockClockService;
@@ -38,7 +38,7 @@ public class CodaDocHeadRepository_deriveStatPayPaidDateIfRequired_Test {
     @Test
     public void when_not_paid() throws Exception {
         // given
-        codaDocHead.setStatPay("");
+        codaDocHeadIncInvoiceIta.setStatPay("");
 
         // expect
         context.checking(new Expectations() {{
@@ -47,16 +47,16 @@ public class CodaDocHeadRepository_deriveStatPayPaidDateIfRequired_Test {
         }});
 
         // when
-        codaDocHeadRepository.deriveStatPayPaidDateIfRequired(codaDocHead, mockPrevious);
+        codaDocHeadRepository.deriveStatPayPaidDateIfRequired(codaDocHeadIncInvoiceIta, mockPrevious);
 
         // then
-        assertThat(codaDocHead.getStatPayPaidDate()).isNull();
+        assertThat(codaDocHeadIncInvoiceIta.getStatPayPaidDate()).isNull();
     }
 
     @Test
     public void when_paid_no_previous() throws Exception {
         // given
-        codaDocHead.setStatPay(STAT_PAY_PAID);
+        codaDocHeadIncInvoiceIta.setStatPay(STAT_PAY_PAID);
 
         // expect
         final LocalDate clockTime = LocalDate.now();
@@ -66,16 +66,16 @@ public class CodaDocHeadRepository_deriveStatPayPaidDateIfRequired_Test {
         }});
 
         // when
-        codaDocHeadRepository.deriveStatPayPaidDateIfRequired(codaDocHead, null);
+        codaDocHeadRepository.deriveStatPayPaidDateIfRequired(codaDocHeadIncInvoiceIta, null);
 
         // then
-        assertThat(codaDocHead.getStatPayPaidDate()).isEqualTo(clockTime);
+        assertThat(codaDocHeadIncInvoiceIta.getStatPayPaidDate()).isEqualTo(clockTime);
     }
 
     @Test
     public void when_paid_but_previous_not_paid() throws Exception {
         // given
-        codaDocHead.setStatPay(STAT_PAY_PAID);
+        codaDocHeadIncInvoiceIta.setStatPay(STAT_PAY_PAID);
 
         // expect
         final LocalDate clockTime = LocalDate.now();
@@ -90,16 +90,16 @@ public class CodaDocHeadRepository_deriveStatPayPaidDateIfRequired_Test {
         }});
 
         // when
-        codaDocHeadRepository.deriveStatPayPaidDateIfRequired(codaDocHead, mockPrevious);
+        codaDocHeadRepository.deriveStatPayPaidDateIfRequired(codaDocHeadIncInvoiceIta, mockPrevious);
 
         // then
-        assertThat(codaDocHead.getStatPayPaidDate()).isEqualTo(clockTime);
+        assertThat(codaDocHeadIncInvoiceIta.getStatPayPaidDate()).isEqualTo(clockTime);
     }
 
     @Test
     public void when_paid_but_previous_was_paid() throws Exception {
         // given
-        codaDocHead.setStatPay(STAT_PAY_PAID);
+        codaDocHeadIncInvoiceIta.setStatPay(STAT_PAY_PAID);
 
         // expect
         final LocalDate previousTime = LocalDate.now();
@@ -114,9 +114,9 @@ public class CodaDocHeadRepository_deriveStatPayPaidDateIfRequired_Test {
         }});
 
         // when
-        codaDocHeadRepository.deriveStatPayPaidDateIfRequired(codaDocHead, mockPrevious);
+        codaDocHeadRepository.deriveStatPayPaidDateIfRequired(codaDocHeadIncInvoiceIta, mockPrevious);
 
         // then
-        assertThat(codaDocHead.getStatPayPaidDate()).isEqualTo(previousTime);
+        assertThat(codaDocHeadIncInvoiceIta.getStatPayPaidDate()).isEqualTo(previousTime);
     }
 }

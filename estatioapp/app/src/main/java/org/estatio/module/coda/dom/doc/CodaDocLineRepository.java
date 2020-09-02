@@ -25,7 +25,7 @@ public class CodaDocLineRepository {
 
     @Programmatic
     public CodaDocLine findByDocHeadAndLineNum(
-            final CodaDocHead docHead,
+            final CodaDocHeadIncInvoiceIta docHead,
             final int lineNum
     ) {
         return repositoryService.uniqueMatch(
@@ -434,8 +434,8 @@ public class CodaDocLineRepository {
     }
 
     @Programmatic
-    public CodaDocHead delete(
-            final CodaDocHead docHead,
+    public CodaDocHeadIncInvoiceIta delete(
+            final CodaDocHeadIncInvoiceIta docHead,
             final int lineNum) {
         final CodaDocLine docLine = findByDocHeadAndLineNum(docHead, lineNum);
         if (docLine != null) {

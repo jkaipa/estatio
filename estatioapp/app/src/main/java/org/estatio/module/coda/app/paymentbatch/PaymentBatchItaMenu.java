@@ -24,7 +24,7 @@ import org.estatio.module.capex.dom.invoice.IncomingInvoice;
 import org.estatio.module.capex.dom.invoice.approval.IncomingInvoiceApprovalState;
 import org.estatio.module.capex.dom.payment.PaymentBatch;
 import org.estatio.module.coda.app.CodaCmpCodeService;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.coda.dom.doc.CodaDocHeadRepository;
 import org.estatio.module.party.dom.Party;
 import org.estatio.module.party.dom.PartyRepository;
@@ -72,10 +72,10 @@ public class PaymentBatchItaMenu {
     }
 
     private List<IncomingInvoice> findFullyApprovedAndAvailableItaInvoices() {
-        List<CodaDocHead> availableCodaDocHeads = codaDocHeadRepository.findAvailable();
-        List<IncomingInvoice> invoices = availableCodaDocHeads.stream()
+        List<CodaDocHeadIncInvoiceIta> availableCodaDocHeadIncInvoiceItas = codaDocHeadRepository.findAvailable();
+        List<IncomingInvoice> invoices = availableCodaDocHeadIncInvoiceItas.stream()
                 .filter(cdh->cdh.getIncomingInvoice()!=null)
-                .map(CodaDocHead::getIncomingInvoice)
+                .map(CodaDocHeadIncInvoiceIta::getIncomingInvoice)
                 .collect(Collectors.toList());
         List<IncomingInvoice> fullyApprovedItaInvoices = invoices.stream().filter(incomingInvoice ->
                 incomingInvoice.getAtPath().startsWith("/ITA") && (

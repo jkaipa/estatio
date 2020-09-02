@@ -33,13 +33,13 @@ public class DerivedObjectUpdater_Test {
     @Mock
     DerivedObjectLookup mockDerivedObjectLookup;
 
-    CodaDocHead codaDocHead;
+    CodaDocHeadIncInvoiceIta codaDocHeadIncInvoiceIta;
     IncomingInvoice incomingInvoice;
     DerivedObjectUpdater derivedObjectUpdater;
 
     @Before
     public void setUp() throws Exception {
-        codaDocHead = new CodaDocHead();
+        codaDocHeadIncInvoiceIta = new CodaDocHeadIncInvoiceIta();
         incomingInvoice = new IncomingInvoice();
         derivedObjectUpdater = new DerivedObjectUpdater();
         derivedObjectUpdater.stateTransitionService = mockStateTransitionService;
@@ -54,14 +54,14 @@ public class DerivedObjectUpdater_Test {
 
         // expecting
         context.checking(new Expectations() {{
-            oneOf(mockDerivedObjectLookup).invoiceIfAnyFrom(codaDocHead);
+            oneOf(mockDerivedObjectLookup).invoiceIfAnyFrom(codaDocHeadIncInvoiceIta);
             will(returnValue(incomingInvoice));
             oneOf(mockStateTransitionService).pendingTransitionOf(incomingInvoice, IncomingInvoiceApprovalStateTransition.class);
             will(returnValue(null));
         }});
 
         // when
-        derivedObjectUpdater.tryUpdatePendingTaskIfRequired(codaDocHead, errorSet);
+        derivedObjectUpdater.tryUpdatePendingTaskIfRequired(codaDocHeadIncInvoiceIta, errorSet);
     }
 
     @Test
@@ -79,14 +79,14 @@ public class DerivedObjectUpdater_Test {
 
         // expecting
         context.checking(new Expectations() {{
-            oneOf(mockDerivedObjectLookup).invoiceIfAnyFrom(codaDocHead);
+            oneOf(mockDerivedObjectLookup).invoiceIfAnyFrom(codaDocHeadIncInvoiceIta);
             will(returnValue(incomingInvoice));
             oneOf(mockStateTransitionService).pendingTransitionOf(incomingInvoice, IncomingInvoiceApprovalStateTransition.class);
             will(returnValue(transition));
         }});
 
         // when
-        derivedObjectUpdater.tryUpdatePendingTaskIfRequired(codaDocHead, errorSet);
+        derivedObjectUpdater.tryUpdatePendingTaskIfRequired(codaDocHeadIncInvoiceIta, errorSet);
 
         // then
         assertThat(task.getDescription()).isEqualTo("We added new validation and this existing invoice is now invalid!");

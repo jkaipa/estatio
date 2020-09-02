@@ -425,7 +425,7 @@ public class CodaTransaction {
     @Getter @Setter
     @Column(allowsNull = "true", name = "responseDocHeadId")
     private CodaDocHeadAbstract response;
-    
+
     @Override
     public String toString() {
         return "CodaTransaction{" +

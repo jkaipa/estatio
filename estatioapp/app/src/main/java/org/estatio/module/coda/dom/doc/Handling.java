@@ -4,20 +4,20 @@ import org.estatio.module.capex.dom.invoice.IncomingInvoice;
 
 public enum Handling {
     /**
-     * The {@link CodaDocHead Coda document} has been marked as to be ignored; it will not be validated nor sync'd.
+     * The {@link CodaDocHeadIncInvoiceIta Coda document} has been marked as to be ignored; it will not be validated nor sync'd.
      */
     EXCLUDED("Excluded"),
     /**
-     * The {@link CodaDocHead Coda document} should not be ignored.
+     * The {@link CodaDocHeadIncInvoiceIta Coda document} should not be ignored.
      *
      * <p>
-     *     At this point it may or may not have validation errors (see {@link CodaDocHead#isValid()}), but it has
+     *     At this point it may or may not have validation errors (see {@link CodaDocHeadIncInvoiceIta#isValid()}), but it has
      *     not been sync'd.
      * </p>
      */
     INCLUDED("Estatio invoice not yet created"),
     /**
-     * The {@link CodaDocHead Coda document} was {@link CodaDocHead#isValid() valid} and an
+     * The {@link CodaDocHeadIncInvoiceIta Coda document} was {@link CodaDocHeadIncInvoiceIta#isValid() valid} and an
      * {@link IncomingInvoice Estatio invoice} (and related objects) has been created for it.
      *
      * <p>

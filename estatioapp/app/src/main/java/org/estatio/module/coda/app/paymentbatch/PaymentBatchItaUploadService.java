@@ -21,7 +21,7 @@ import org.estatio.module.capex.dom.invoice.IncomingInvoice;
 import org.estatio.module.capex.dom.invoice.approval.IncomingInvoiceApprovalState;
 import org.estatio.module.capex.dom.payment.PaymentBatch;
 import org.estatio.module.capex.dom.payment.PaymentBatchRepository;
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.coda.dom.doc.CodaDocHeadRepository;
 import org.estatio.module.financial.dom.BankAccount;
 import org.estatio.module.invoice.dom.PaymentMethod;
@@ -58,7 +58,7 @@ public class PaymentBatchItaUploadService {
             PaymentBatch newBatch = paymentBatchRepository.findOrCreateNewByDebtorBankAccount(buyerBankAccount);
             Lists.newArrayList(newBatch.getLines()).stream().forEach(l->l.remove());
             for (PaymentBatchItaImportLine line : lines){
-                final CodaDocHead docHeadIfAny = codaDocHeadRepository.findByCmpCodeAndDocCodeAndDocNum(ecpBuyerCompany.getReference(), line.getCodiceDocumento(), line.getNumeroDocumento());
+                final CodaDocHeadIncInvoiceIta docHeadIfAny = codaDocHeadRepository.findByCmpCodeAndDocCodeAndDocNum(ecpBuyerCompany.getReference(), line.getCodiceDocumento(), line.getNumeroDocumento());
                 if (docHeadIfAny!=null) {
                     final IncomingInvoice invoiceFromLine = docHeadIfAny.getIncomingInvoice();
                     if (invoiceFromLine != null) {

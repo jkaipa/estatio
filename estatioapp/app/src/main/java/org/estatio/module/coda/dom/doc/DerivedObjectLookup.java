@@ -13,17 +13,17 @@ import org.estatio.module.capex.dom.invoice.IncomingInvoice;
 @DomainService(nature = NatureOfService.DOMAIN)
 public class DerivedObjectLookup {
 
-    IncomingInvoice invoiceIfAnyFrom(final CodaDocHead docHead) {
+    IncomingInvoice invoiceIfAnyFrom(final CodaDocHeadIncInvoiceIta docHead) {
         return docHead != null ? docHead.getIncomingInvoice() : null;
     }
 
-    String documentNameIfAnyFrom(final CodaDocHead docHead) {
+    String documentNameIfAnyFrom(final CodaDocHeadIncInvoiceIta docHead) {
         return docHead != null
                 ? docHead.getSummaryLineDocumentName(LineCache.DEFAULT)
                 : null;
     }
 
-    Paperclip paperclipIfAnyFrom(final CodaDocHead docHead) {
+    Paperclip paperclipIfAnyFrom(final CodaDocHeadIncInvoiceIta docHead) {
 
         final IncomingInvoice invoiceIfAny = invoiceIfAnyFrom(docHead);
         final String documentNameIfAny = documentNameIfAnyFrom(docHead);

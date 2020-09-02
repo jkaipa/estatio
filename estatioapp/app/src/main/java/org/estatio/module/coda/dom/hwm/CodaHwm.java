@@ -21,7 +21,7 @@ import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.Editing;
 import org.apache.isis.applib.annotation.Property;
 
-import org.estatio.module.coda.dom.doc.CodaDocHead;
+import org.estatio.module.coda.dom.doc.CodaDocHeadIncInvoiceIta;
 import org.estatio.module.coda.dom.supplier.CodaSupplier;
 
 import lombok.Getter;
@@ -31,7 +31,7 @@ import lombok.Setter;
  * Manages the "high water mark" for data feeds from Coda, for different feeds, on a per cmpCode basis.
  *
  * <p>
- *     Expect there to be multiple instances for {@link CodaDocHead} (for each cmpCode, eg "IT01", "IT05" etc)
+ *     Expect there to be multiple instances for {@link CodaDocHeadIncInvoiceIta} (for each cmpCode, eg "IT01", "IT05" etc)
  *     as well as a single instance for {@link CodaSupplier} (just "IT01"; the suppliers are the same across all companies in Coda so need to copy them over individually).
  * </p>
  */

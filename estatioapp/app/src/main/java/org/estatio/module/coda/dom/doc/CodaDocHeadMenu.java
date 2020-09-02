@@ -29,12 +29,12 @@ import org.estatio.module.coda.app.CodaDocCodeService;
 public class CodaDocHeadMenu {
 
     @Action(semantics = SemanticsOf.SAFE)
-    public CodaDocHead lookupCodaDocument(
+    public CodaDocHeadIncInvoiceIta lookupCodaDocument(
             final String cmpCode,
             final String docCode,
             final String docNum
     ) {
-        final CodaDocHead docHead =
+        final CodaDocHeadIncInvoiceIta docHead =
                 codaDocHeadRepository.findByCmpCodeAndDocCodeAndDocNum(cmpCode, docCode, docNum);
         if(docHead == null) {
             messageService.informUser(String.format(
