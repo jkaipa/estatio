@@ -30,7 +30,7 @@ import lombok.Setter;
 @Discriminator(
         strategy = DiscriminatorStrategy.VALUE_MAP,
         column = "discriminator",
-        value = "org.estatio.module.coda.dom.doc.CodaDocHeadAbstract"
+        value = "org.estatio.module.coda.dom.doc.CodaDocHead"
 )
 @DatastoreIdentity(
         strategy = IdGeneratorStrategy.IDENTITY,
@@ -48,12 +48,12 @@ import lombok.Setter;
 @DomainObjectLayout(
         bookmarking = BookmarkPolicy.AS_ROOT
 )
-public abstract class CodaDocHeadAbstract {
+public abstract class CodaDocHead {
 
-    public CodaDocHeadAbstract() {
+    public CodaDocHead() {
     }
 
-    public CodaDocHeadAbstract(
+    public CodaDocHead(
             final String cmpCode,
             final String docCode) {
 

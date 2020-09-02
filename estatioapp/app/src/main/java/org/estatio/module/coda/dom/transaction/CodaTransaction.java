@@ -377,7 +377,7 @@ import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.Editing;
 
-import org.estatio.module.coda.dom.doc.CodaDocHeadAbstract;
+import org.estatio.module.coda.dom.doc.CodaDocHead;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -420,11 +420,11 @@ public class CodaTransaction {
 
     @Getter @Setter
     @Column(allowsNull = "false", name = "docHeadId")
-    private CodaDocHeadAbstract payload;
+    private CodaDocHead payload;
 
     @Getter @Setter
     @Column(allowsNull = "true", name = "responseDocHeadId")
-    private CodaDocHeadAbstract response;
+    private CodaDocHead response;
 
     @Override
     public String toString() {

@@ -24,7 +24,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Queries;
 import javax.jdo.annotations.Query;
-import javax.jdo.annotations.Unique;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.google.common.base.Strings;
@@ -173,9 +172,9 @@ import lombok.val;
                         + "   && incomingInvoice.applicationTenancyPath.startsWith(:atPathPrefix) "
         )
 })
-@Unique(name = "CodaDocHead_cmpCode_docCode_docNum_UNQ", members = { "cmpCode", "docCode", "docNum" })
 @Indices({
-        @Index(name = "CodaDocHead_codaPeriodQuarter_handling_IDX", members = { "codaPeriodQuarter", "handling" })
+        @Index(name = "CodaDocHead_codaPeriodQuarter_handling_IDX", members = { "codaPeriodQuarter", "handling" }),
+        @Index(name = "CodaDocHead_cmpCode_docCode_docNum_IDX", members = { "cmpCode", "docCode", "docNum" }),
 })
 @DomainObject(
         objectType = "coda.CodaDocHead",
@@ -185,7 +184,7 @@ import lombok.val;
         bookmarking = BookmarkPolicy.AS_ROOT
 )
 @XmlJavaTypeAdapter(PersistentEntityAdapter.class)
-public class CodaDocHeadIncInvoiceIta extends CodaDocHeadAbstract implements Comparable<CodaDocHeadIncInvoiceIta>, HasAtPath {
+public class CodaDocHeadIncInvoiceIta extends CodaDocHead implements Comparable<CodaDocHeadIncInvoiceIta>, HasAtPath {
 
     static final CodaPeriodParser parser = new CodaPeriodParser();
 
