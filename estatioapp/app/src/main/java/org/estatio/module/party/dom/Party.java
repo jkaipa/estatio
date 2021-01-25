@@ -53,6 +53,7 @@ import org.apache.isis.schema.utils.jaxbadapters.PersistentEntityAdapter;
 
 import org.estatio.module.lease.dom.LeaseAgreementRoleTypeEnum;
 import org.isisaddons.module.security.dom.tenancy.ApplicationTenancy;
+import org.isisaddons.module.security.dom.tenancy.ApplicationTenancyRepository;
 
 import org.incode.module.base.dom.types.ReferenceType;
 import org.incode.module.base.dom.utils.TitleBuilder;
@@ -148,6 +149,14 @@ public abstract class Party
     public Party(final String reference) {
         this();
         setReference(reference);
+    }
+
+    /**
+     * For unit testing
+     */
+    public Party(ApplicationTenancyRepository applicationTenancyRepository) {
+        this();
+        this.securityApplicationTenancyRepository = applicationTenancyRepository;
     }
 
     public String title() {
